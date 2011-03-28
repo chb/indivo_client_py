@@ -1,0 +1,249 @@
+
+Documentation for Using the python-oauth Library
+2009-02-18 Ben Adida (ben.adida@childrens.harvard.edu)
+======================================================
+
+OAuth is a protocol that lets Alice grant a Consumer access to her
+protected resources stored by a Service Provider, without revealing
+her username and password to the Consumer.
+
+python-oauth is a Python library that implements as much of the OAuth
+protocol as possible without dictating how data is stored or what web
+framework is used. A developer who uses python-oauth needs to
+implement:
+
+1) a function that maps the HttpRequest object provided by their
+web framework to the framework-agnostic HttpRequest object for OAuth
+processing. This is usually 10 lines of code or less. python-oauth
+provides this function out of the box for Django.
+
+2) a class that handles the creation, storage and retrieval of OAuth
+consumer and token information. This consists of 8 straight-forward
+methods that, in a framework like Django, require 2 lines of code
+each. The developer may use a SQL database, an object store, a DHT, or
+any other storage system of her choice.
+
+3) framework-specific mappings of the OAuth request_token and
+access_token URLs to the framework-agnostic handlers provided by
+python-oauth.
+
+4) the "authorize" HTML screen displayed to the user when she is
+prompted to approve access by an application. python-oauth provides a
+sample such screen for Django.
+
+5) calls to the python-oauth library when auth checks are required.
+
+
+=======================================================
+
+Example Implementation for Django
+---------------------------------
+
+1) Mapping a Django Request to an oauth.HttpRequest
+
+Five data items need to be extracted from the framework-specific HTTP
+request:
+	a) the method, GET, POST, PUT, or DELETE
+
+	b) the full URL, including protocol (e.g. https) and full
+	hostname and port, but not including the query string
+
+	c) the content-type of the request (the header Content-type)
+
+	d) the query string if the method is GET or the request body
+	otherwise, still encoded.
+
+	e) the headers
+
+Here is the Django-specific request extraction:
+
+def extract_request(request):
+    """
+    Extracts the implementation-independent HTTP request components from a Django HTTP request object.
+    
+    HTTP method, url, request body content type, request body content, headers (at least the authorization header)
+    """
+
+    if request.method == "GET":
+        data = request.META['QUERY_STRING']
+    else:
+        data = request.raw_post_data
+
+    content_type = request.META['CONTENT_TYPE']
+
+    # we need the full path, including protocol, host, and relative path
+    full_path = "%s://%s%s" % (request.is_secure() and 'https' or 'http', request.get_host(), request.path)
+
+    return oauth.HTTPRequest(request.method, full_path, content_type, data, request.META)
+
+
+
+2) Consumer and Token Storage Class
+
+This is a straight-forward class that should override a number of
+methods for looking up and storing consumer and token information.
+
+This usually requires the implementor to define classes for Consumer,
+Token (possibly RequestToken and AccessToken if so desired), and
+Nonce. python-oauth doesn't define these in order to give the
+implementor maximum flexibility. However, at the very least, the
+classes should provide:
+
+* Consumer: consumer_key and secret attributes
+* Token: token and secret attributes
+* Nonce: no requirement
+
+Then, it's time to implement your OAuth Data Store. The python-oauth
+library will call these methods at the appropriate time.
+
+class MyDataStore(oauth.OAuthStore):
+    """
+    Layer between python-oauth and your data store
+    """
+
+    def lookup_consumer(self, consumer_key):
+        """
+        looks up a consumer and returns the implementor's preferred
+        data structure for representing such a consumer
+        """
+	pass
+
+    def create_request_token(self, consumer, request_token_str, request_token_secret):
+        """
+        given the raw data for a request token, create the preferred
+        data structure, store it, and return it.
+        """
+	pass
+
+    def lookup_request_token(self, consumer, request_token_str):
+        """
+	given the consumer (whatever data structure was returned by
+        lookup_consumer) and the request token string, look up and
+        return the RequestToken data structure.
+
+	consumer may be null, but if it is non-null, this method
+        should check that the request token properly matches the consumer.
+        """
+	pass
+
+    def authorize_request_token(self, request_token, user, **kwargs):
+        """
+        Mark a request token as authorized by the given user,
+        with the given additional parameters.
+
+        The user is a data structure defined by the developer, not by
+        python-oauth.  kwargs are custom keyword arguments defined by the
+        developer, not by python-oauth.
+	"""
+	pass        
+
+    def mark_request_token_used(self, consumer, request_token):
+        """
+        Mark that this request token has been used.
+        Should throw an exception if it's already been used.
+        """
+	pass
+
+    def create_access_token(self, consumer, request_token, access_token_str, access_token_secret):
+        """
+        create, store, and return a new access token object based on
+        the token and secret passed in. Mark this access token as
+        being the exchanged version of the given request token.
+        
+        IMPORTANT: does not need to check that the request token is still valid, 
+        as the library will ensure that this method is never called twice on the same request token,
+        as long as mark_request_token_used appropriately throws an error the second time it's called.
+        """
+	pass
+
+    def lookup_access_token(self, consumer, access_token_str):
+        """
+	look up an access token by token string
+        """
+        pass
+
+    def check_and_store_nonce(self, nonce_str):
+        """
+        store the given nonce in some form to check for later duplicates
+        
+        IMPORTANT: raises an exception if the nonce has already been
+        stored
+	
+	If you want to ignore nonces, just pass on this method
+        """
+	pass
+
+
+Then, the developer needs to set up an oauth.OAuthServer instance
+which will be the window onto the python-oauth API:
+
+OAUTH_SERVER = oauth.OAuthServer(store = MyDataStore())
+
+3) Map the request_token and access_token URLs
+
+The request_token and access_token URLs are specific to OAuth, they do
+not require any handling by the developer's application. However, the
+developer does need to map these URLs to the appropriate python-oauth
+library calls.
+
+For Django, it's just two views that need access to OAUTH_SERVER
+created in step (2) and extract_request from step (1)
+
+def request_token(request):
+    """
+    the request-token request URL
+    """
+
+    # ask the oauth server to generate a request token given the HTTP request
+    try:
+        request_token = OAUTH_SERVER.generate_request_token(extract_request(request))
+        return HttpResponse(request_token.to_string())
+    except oauth.OAuthError:
+        # an exception can be raised if there is a bad signature (or no signature) in the request
+        raise PermissionDenied()
+
+
+def access_token(request):
+    # ask the oauth server to exchange a request token into an access token
+    # this will check proper oauth for this action
+    try:
+        access_token = OAUTH_SERVER.exchange_request_token(extract_request(request))
+    except oauth.OAuthError:
+        # an exception can be raised if there is a bad signature (or no signature) in the request
+        pass
+
+    return HttpResponse(access_token.to_string())
+
+
+
+4) Define the authorize screen.
+
+This is highly customizable depending on how the developer wishes to
+present the authorization screen. The Django example is:
+
+## FIXME: need to revamp the API a little bit for this call that gets
+   the request token and returns the consumer
+
+def user_authorization(request):
+  token = # get it somehow
+
+  if request.method == "POST":
+    # custom variables
+    custom_1 = request.POST['custom_1']
+    custom_2 = request.POST['custom_2']
+
+    OAUTH_SERVER.authorize_request_token(token.token, request.user, custom_1=custom_1, custom_2 = custom_2)
+  else:
+    # render template that displays authorize screen.
+
+
+5) Check authentication
+
+When wanting to check the OAuth authentication for a given request,
+using extract_request from (1) and OAUTH_SERVER from (2)
+
+consumer, token, oauth_parameters = OAUTH_SERVER.check_resource_access(extract_request(request))
+
+Note that consumer and token are of the type defined by the OAuthStore
+class defined in (3), and oauth_parameters is a dictionary of all
+signed OAuth header parameters.

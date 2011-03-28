@@ -1,1 +1,5 @@
-added a line for testing github
+
+BEFORE FIRST USE: You must generate the /lib/api.py file by:
+
+$ cd lib
+$ python ./create_api.py

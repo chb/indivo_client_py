@@ -1,0 +1,590 @@
+<api>
+  <method>
+    <call name='post_access_token' method='post' url='/oauth/access_token' />
+    <response />
+  </method>
+  <method>
+    <call name='post_document' method='post' url='/records/{RECORD_ID}/documents/' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='post_document_ext' method='put' url='/records/{RECORD_ID}/documents/external/{APP_ID}/{EXTERNAL_ID}' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='account_inbox' method='get' url='/accounts/{ACCOUNT_ID}/inbox/' />
+    <response />
+  </method>
+  <method>
+    <call name='account_inbox_message' method='get' url='/accounts/{ACCOUNT_ID}/inbox/{MESSAGE_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='account_message_archive' method='post' url='/accounts/{ACCOUNT_ID}/inbox/{MESSAGE_ID}/archive' />
+    <response />
+  </method>
+  <method>
+    <call name='account_inbox_message_attachment_accept' method='post' url='/accounts/{ACCOUNT_ID}/inbox/{MESSAGE_ID}/attachments/{ATTACHMENT_NUM}/accept' />
+    <response />
+  </method>
+  <method>
+    <call name='account_notifications' method='get' url='/accounts/{ACCOUNT_ID}/notifications/' />
+    <response />
+  </method>
+  <method>
+    <call name='message_account' method='post' url='/accounts/{ACCOUNT_ID}/inbox/' />
+    <response />
+  </method>
+  <method>
+    <call name='get_recapp_documents' method='get' url='/records/{RECORD_ID}/apps/{APP_ID}/documents/' />
+    <response element='Documents' attribute='record_id'>
+      <response element='Document' attribute='id' />
+    </response>
+  </method>
+  <method>
+    <call name='create_session' method='post' url='/oauth/internal/session_create' />
+  </method>
+  <method>
+    <call name='account_search' method='get' url='/accounts/search?{PARAMETERS}' />
+  </method>
+  <method>
+    <call name='account_forgot_password' method='get' url='/accounts/forgot-password?{PARAMETERS}' />
+  </method>
+  <method>
+    <call name='account_info' method='get' url='/accounts/{ACCOUNT_ID}' />
+  </method>
+  <method>
+    <call name='account_primary_secret' method='get' url='/accounts/{ACCOUNT_ID}/primary-secret' />
+  </method>
+  <method>
+    <call name='add_auth_system' method='post' url='/accounts/{ACCOUNT_ID}/authsystems/' />
+  </method>
+  <method>
+    <call name='account_set_password' method='post' url='/accounts/{ACCOUNT_ID}/authsystems/password/set' />
+  </method>
+  <method>
+    <call name='account_change_password' method='post' url='/accounts/{ACCOUNT_ID}/authsystems/password/change' />
+  </method>
+  <method>
+    <call name='account_initialize' method='post' url='/accounts/{ACCOUNT_ID}/initialize/{PRIMARY_SECRET}' />
+  </method>
+  <method>
+    <call name='account_reset' method='post' url='/accounts/{ACCOUNT_ID}/reset' />
+  </method>
+  <method>
+    <call name='account_username_set' method='post' url='/accounts/{ACCOUNT_ID}/authsystems/password/set-username' />
+  </method>
+  <method>
+    <call name='account_info_set' method='post' url='/accounts/{ACCOUNT_ID}/info-set' />
+  </method>
+  <method>
+    <call name='account_set_state' method='post' url='/accounts/{ACCOUNT_ID}/set-state' />
+  </method>
+  <method>
+    <call name='account_secret_resend' method='get' url='/accounts/{ACCOUNT_ID}/secret-resend' />
+  </method>
+  <method>
+    <call name='check_account_secrets' method='get' url='/accounts/{ACCOUNT_ID}/check-secrets/{PRIMARY_SECRET}?{PARAMETERS}' />
+  </method>
+  <method>
+    <call name='read_record' method='get' url='/records/{RECORD_ID}' />
+    <response element='Record' attribute='id' />
+  </method>
+  <method>
+    <call name='replace_document' method='post' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/replace' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='read_document_versions' method='get' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/versions/?{PARAMETERS}' />
+    <response element='Documents' attribute='record_id'>
+      <response element='Document' attribute='id' />
+    </response>
+  </method>
+  <method>
+    <call name='put_document_relate_existing' method='put' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/rels/{REL_TYPE}/{OTHER_DOCUMENT_ID}' />
+    <response element='Documents' attribute='record_id'>
+      <response element='Document' attribute='id' />
+    </response>
+  </method>
+  <method>
+    <call name='post_request_token' method='post' url='/oauth/request_token' />
+    <response />
+  </method>
+  <method>
+    <call name='claim_request_token' method='post' url='/oauth/internal/request_tokens/{REQUEST_TOKEN}/claim' />
+    <response />
+  </method>
+  <method>
+    <call name='get_request_token_info' method='get' url='/oauth/internal/request_tokens/{REQUEST_TOKEN}/info' />
+    <response />
+  </method>
+  <method>
+    <call name='approve_request_token' method='post' url='/oauth/internal/request_tokens/{REQUEST_TOKEN}/approve' />
+    <response />
+  </method>
+  <method>
+    <call name='post_recapp_setup' method='post' url='/records/{RECORD_ID}/apps/{APP_ID}/setup' />
+    <response />
+  </method>
+  <method>
+    <call name='post_recapp_document' method='post' url='/records/{RECORD_ID}/apps/{APP_ID}/documents/' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='read_document_meta' method='get' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/meta?{PARAMETERS}' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <!-- this is principal_email because it's not necessarily a PHA 
+	 most likely it is an admin app, but in any case it should match
+	 whoever is authenticated at the time.
+      -->
+    <call name='put_record_ext' method='put' url='/records/external/{PRINCIPAL_EMAIL}/{EXTERNAL_ID}' />
+    <response />
+  </method>
+  <!-- deprecated call
+  <method>
+    <call name='read_document_types' method='get' url='/records/{RECORD_ID}/documents/types/{TYPE}/?{PARAMETERS}' />
+    <response element='Documents' attribute='record_id'>
+      <response element='Document' attribute='id' />
+    </response>
+  </method>
+  -->
+  <method>
+    <call name='create_record' method='post' url='/records/' />
+    <response element='Record' attribute='id'>
+      <response element='demographics' attribute='document_id' />
+    </response>
+  </method>
+  <method>
+    <call name='put_recapp_document_ext' method='put' url='/records/{RECORD_ID}/apps/{APP_ID}/documents/external/{EXTERNAL_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='create_account' method='post' url='/accounts/' />
+    <response element='Account' attribute='id' />
+  </method>
+  <method>
+    <call name='get_document_relate' method='get' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/rels/{REL_TYPE}/' />
+    <response />
+  </method>
+  <method>
+    <call name='read_records' method='get' url='/accounts/{ACCOUNT_ID}/records/' />
+    <response element='Record' attribute='id' />
+  </method>
+  <method>
+    <call name='put_document_relate_ext' method='get' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/rels/{REL_TYPE}/external/{APP_ID}/{EXTERNAL_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='setup_app' method='post' url='/records/{RECORD_ID}/apps/{APP_ID}/setup' />
+    <response />
+  </method>
+  <method>
+    <call name='create_share' method='post' url='/records/{RECORD_ID}/shares/' />
+    <response />
+  </method>
+  <method>
+    <call name='get_shares' method='get' url='/records/{RECORD_ID}/shares/' />
+    <response />
+  </method>
+  <method>
+    <call name='delete_share' method='post' url='/records/{RECORD_ID}/shares/{ACCOUNT_ID}/delete' />
+    <response />
+  </method>
+  <method>
+    <call name='get_account_permissions' method='get' url='/accounts/{ACCOUNT_ID}/permissions/' />
+    <response />
+  </method>
+  <method>
+    <call name='get_carenet_account_permissions' method='get' url='/carenets/{CARENET_ID}/accounts/{ACCOUNT_ID}/permissions' />
+    <response />
+  </method>
+  <method>
+    <call name='get_carenet_app_permissions' method='get' url='/carenets/{CARENET_ID}/apps/{APP_ID}/permissions' />
+    <response />
+  </method>
+  <method>
+    <call name='read_document' method='get' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='set_document_status' method='post' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/set-status' />
+    <response/>
+  </method>
+  <method>
+    <call name='read_document_status_history' method='get' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/status-history' />
+    <response/>
+  </method>
+  <method>
+    <call name='read_carenet_document_meta' method='get' url='/carenets/{CARENET_ID}/documents/{DOCUMENT_ID}/meta?{PARAMETERS}' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='read_carenet_special_document' method='get' url='/carenets/{CARENET_ID}/documents/special/{SPECIAL_DOCUMENT}' />
+  </method>
+  <method>
+    <call name='post_document_label' method='put' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/label' />
+    <response element='Document' attribute='id'>
+      <reponse element='label' attribute='value' />
+    </response>
+  </method>
+  <method>
+    <call name='read_recapp_document_meta' method='get' url='/records/{RECORD_ID}/apps/{APP_ID}/documents/{DOCUMENT_ID}/meta' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='put_document_ext_replace' method='put' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/replace/external/{APP_ID}/{EXTERNAL_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='set_record_owner' method='post' url='/records/{RECORD_ID}/owner' />
+    <response element='Account' attribute='email' />
+  </method>
+  <method>
+    <call name='put_document_ext_label' method='put' url='/records/{RECORD_ID}/documents/external/{APP_ID}/{EXTERNAL_ID}/label' />
+    <response element='Document' attribute='id'>
+      <response element='label' attribute='value' />
+    </response>
+  </method>
+  <method>
+    <call name='get_messages' method='get' url='/records/{RECORD_ID}/inbox/' />
+    <response />
+  </method>
+  <method>
+    <call name='get_record_apps' method='get' url='/records/{RECORD_ID}/apps/' />
+    <response element='App' attribute='id' />
+  </method>
+  <method>
+    <call name='read_document_ext_meta' method='get' url='/records/{RECORD_ID}/documents/external/{APP_ID}/{EXTERNAL_ID}/meta' />
+    <response />
+  </method>
+  <method>
+    <call name='get_authorize_token' method='get' url='/oauth/authorize?oauth_token={TOKEN}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_recapp_document_ext_meta' method='get' url='/records/{RECORD_ID}/apps/{APP_ID}/documents/external/{EXTERNAL_ID}/meta' />
+    <response />
+  </method>
+  <method>
+    <call name='get_recapp_document' method='get' url='/records/{RECORD_ID}/apps/{APP_ID}/documents/{DOCUMENT_ID}?{PARAMETERS}' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='get_request_token' method='post' url='/oauth/request_token' />
+    <response />
+  </method>
+  <method>
+    <call name='put_message_notification' method='put' url='/accounts/{ACCOUNT_ID}/notifications/{NOTIFICATION_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='record_notify' method='post' url='/records/{RECORD_ID}/notify' />
+    <response />
+  </method>
+  <method>
+    <call name='post_document_relate_given' method='post' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/rels/{REL_TYPE}/' />
+    <response />
+  </method>
+  <method>
+    <call name='put_recapp_document_label' method='put' url='/records/{RECORD_ID}/apps/{APP_ID}/documents/{DOCUMENT_ID}/label' />
+    <response element='Document' attribute='id'>
+      <response element='label' attribute='value' />
+    </response>
+  </method>
+  <method>
+    <call name='read_documents' method='get' url='/records/{RECORD_ID}/documents/?{PARAMETERS}' />
+    <response element='Documents' attribute=''>
+      <response element='Document' attribute='id' />
+    </response>
+  </method>
+  <method>
+    <call name='get_access_token' method='get' url='/oauth/access_token' />
+    <response />
+  </method>
+  <method>
+    <call name='delete_recapp_document' method='delete' url='/records/{RECORD_ID}/apps/{APP_ID}/documents/{DOCUMENT_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_special_document' method='get' url='/records/{RECORD_ID}/documents/special/{SPECIAL_DOCUMENT}' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='message_record' method='post' url='/records/{RECORD_ID}/inbox/{MESSAGE_ID}' />
+    <response element='Result' attribute='' />
+  </method>
+  <method>
+    <call name='message_record_attachment' method='post' url='/records/{RECORD_ID}/inbox/{MESSAGE_ID}/attachments/{ATTACHMENT_NUM}' />
+    <response element='Result' attribute='' />
+  </method>
+  <method>
+    <call name='post_authorize_token' method='post' url='/oauth/authorize' />
+    <response />
+  </method>
+  <method>
+    <call name='put_special_document' method='put' url='/records/{RECORD_ID}/documents/special/{SPECIAL_DOCUMENT}' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='read_record_audit' method='get' url='/records/{RECORD_ID}/audits/?{PARAMETERS}' />
+    <response element='AuditLog' attribute=''>
+      <response element='Entry' attribute='principal' />
+    </response>
+  </method>
+  <method>
+    <call name='read_document_audit' method='get' url='/records/{RECORD_ID}/audits/documents/{DOCUMENT_ID}/?{PARAMETERS}' />
+    <response element='AuditLog' attribute=''>
+      <response element='Entry' attribute='principal' />
+    </response>
+  </method>
+  <method>
+    <call name='read_function_audit' method='get' url='/records/{RECORD_ID}/audits/documents/{DOCUMENT_ID}/functions/{FUNCTION_NAME}/?{PARAMETERS}' />
+    <response element='AuditLog' attribute=''>
+      <response element='Entry' attribute='principal' />
+    </response>
+  </method>
+  <method>
+    <call name='delete_app' method='delete' url='/apps/{APP_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='delete_record_app' method='delete' url='/records/{RECORD_ID}/apps/{APP_ID}' />
+    <response />
+  </method>
+
+  <!-- App-specific Documents -->
+  <method>
+    <call name='read_app_documents' method='get' url='/apps/{APP_ID}/documents/?{PARAMETERS}' />
+    <response element='Documents' attribute='record_id'>
+      <response element='Document' attribute='id' />
+    </response>
+  </method>
+  <method>
+    <call name='post_app_document' method='post' url='/apps/{APP_ID}/documents/' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='post_app_document_ext' method='put' url='/apps/{APP_ID}/documents/external/{EXTERNAL_ID}' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='read_app_document_meta' method='get' url='/apps/{APP_ID}/documents/{DOCUMENT_ID}/meta' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='create_or_replace_app_document' method='put' url='/apps/{APP_ID}/documents/{DOCUMENT_ID}' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='read_app_document_ext_meta' method='get' url='/apps/{APP_ID}/documents/external/{EXTERNAL_ID}/meta' />
+    <response />
+  </method>
+  <method>
+    <call name='read_app_document' method='get' url='/apps/{APP_ID}/documents/{DOCUMENT_ID}?{PARAMETERS}' />
+    <response element='Document' attribute='id' />
+  </method>
+  <method>
+    <call name='post_app_document_label' method='put' url='/apps/{APP_ID}/documents/{DOCUMENT_ID}/label' />
+    <response element='Document' attribute='id'>
+      <response element='label' attribute='value' />
+    </response>
+  </method>
+  <method>
+    <call name='remove_app_document' method='delete' url='/apps/{APP_ID}/documents/{DOCUMENT_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='delete_documents' method='delete' url='/records/{RECORD_ID}/documents/' />
+    <response />
+  </method>
+  <method>
+    <call name='delete_document' method='delete' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}' />
+    <response />
+  </method>
+
+  <!-- Reports -->
+  <method>
+    <call name='read_measurements' method='get' url='/records/{RECORD_ID}/reports/minimal/measurements/{LAB_CODE}/?{PARAMETERS}' />
+    <response element='Measurements' attribute='record'>
+      <response element='Measurement' attribute='id' />
+    </response>
+  </method>
+  <method>
+    <call name='read_immunizations' method='get' url='/records/{RECORD_ID}/reports/minimal/immunizations/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_allergies' method='get' url='/records/{RECORD_ID}/reports/minimal/allergies/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_labs' method='get' url='/records/{RECORD_ID}/reports/minimal/labs/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_procedures' method='get' url='/records/{RECORD_ID}/reports/minimal/procedures/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_problems' method='get' url='/records/{RECORD_ID}/reports/minimal/problems/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_ccr_experimental' method='get' url='/records/{RECORD_ID}/reports/experimental/ccr?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_medications' method='get' url='/records/{RECORD_ID}/reports/minimal/medications/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_equipment' method='get' url='/records/{RECORD_ID}/reports/minimal/equipment/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_vitals_category' method='get' url='/records/{RECORD_ID}/reports/minimal/vitals/{CATEGORY}/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_vitals' method='get' url='/records/{RECORD_ID}/reports/minimal/vitals/?{PARAMETERS}' />
+    <response />
+  </method>
+
+  <!-- Carenet Reports -->
+  <method>
+    <call name='read_carenet_measurements' method='get' url='/carenets/{CARENET_ID}/reports/minimal/measurements/{LAB_CODE}/?{PARAMETERS}' />
+    <response element='Measurements' attribute='record'>
+      <response element='Measurement' attribute='id' />
+    </response>
+  </method>
+  <method>
+    <call name='read_carenet_immunizations' method='get' url='/carenets/{CARENET_ID}/reports/minimal/immunizations/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_carenet_allergies' method='get' url='/carenets/{CARENET_ID}/reports/minimal/allergies/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_carenet_procedures' method='get' url='/carenets/{CARENET_ID}/reports/minimal/procedures/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_carenet_problems' method='get' url='/carenets/{CARENET_ID}/reports/minimal/problems/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_carenet_medications' method='get' url='/carenets/{CARENET_ID}/reports/minimal/medications/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_carenet_equipment' method='get' url='/carenets/{CARENET_ID}/reports/minimal/equipment/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_carenet_vitals_category' method='get' url='/carenets/{CARENET_ID}/reports/minimal/vitals/{CATEGORY}/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_carenet_vitals' method='get' url='/carenets/{CARENET_ID}/reports/minimal/vitals/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='get_autoshare' method='get' url='/records/{RECORD_ID}/autoshare/bytype/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='get_autoshare_bytype_all' method='get' url='/records/{RECORD_ID}/autoshare/bytype/all' />
+    <response />
+  </method>
+  <method>
+    <call name='post_autoshare' method='post' url='/records/{RECORD_ID}/autoshare/carenets/{CARENET_ID}/bytype/set' />
+    <response />
+  </method>
+  <method>
+    <call name='delete_autoshare' method='post' url='/records/{RECORD_ID}/autoshare/carenets/{CARENET_ID}/bytype/unset' />
+    <response />
+  </method>
+
+  <method>
+    <call name='document_nevershare_set' method='put' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/nevershare' />
+  </method>
+
+  <method>
+    <call name='document_nevershare_remove' method='delete' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/nevershare' />
+  </method>
+
+  <!-- coding systems -->
+  <method>
+    <call name='lookup_code' method='get' url='/codes/systems/{CODING_SYSTEM}/query?{PARAMETERS}' />
+    <response />
+  </method>
+
+  <!-- Sharing -->
+  <method>
+    <call name='get_account_records' method='get' url='/accounts/{ACCOUNT_ID}/records/' />
+    <response />
+  </method>
+  <method>
+    <call name='get_carenet_apps' method='get' url='/carenets/{CARENET_ID}/apps/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='get_carenet_accounts' method='get' url='/carenets/{CARENET_ID}/accounts/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='post_carenet_account' method='post' url='/carenets/{CARENET_ID}/accounts/' />
+    <response />
+  </method>
+  <method>
+    <call name='delete_carenet_account' method='delete' url='/carenets/{CARENET_ID}/accounts/{ACCOUNT_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='delete_carenet_document' method='delete' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/carenets/{CARENET_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='create_carenet' method='post' url='/records/{RECORD_ID}/carenets/' />
+    <response />
+  </method>
+  <method>
+    <call name='get_record_carenets' method='get' url='/records/{RECORD_ID}/carenets/' />
+    <response element='Carenets' attribute='record_id'>
+      <response element='Carenet' attribute='id' />
+    </response>
+  </method>
+  <method>
+    <call name='get_document_carenets' method='get' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/carenets/' />
+    <response />
+  </method>
+  <method>
+    <call name='get_carenet_record' method='get' url='/carenets/{CARENET_ID}/record' />
+    <response element='Record' attribute='id' />
+  </method>
+  <method>
+    <call name='get_carenet_documents' method='get' url='/carenets/{CARENET_ID}/documents/?{PARAMETERS}' />
+    <response element='Documents' attribute='record_id'>
+      <response element='Document' attribute='id' />
+    </response>
+  </method>
+  <method>
+    <call name='get_carenet_document' method='get' url='/carenets/{CARENET_ID}/documents/{DOCUMENT_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='post_carenet_document' method='put' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/carenets/{CARENET_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='get_version' method='get' url='/version' />
+    <response />
+  </method>
+  <method>
+    <call name='post_carenet_app' method='put' url='/carenets/{CARENET_ID}/apps/{APP_ID}' />
+    <response />
+  </method>
+</api>

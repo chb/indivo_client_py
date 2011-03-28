@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<application xmlns="http://research.sun.com/wadl/2006/10">
+  <resources base="http://localhost:8000">
+      <resource path='/accounts/'>
+        <method name='post' id='create_account'>
+          <response>
+            <representation mediaType='application/xml' />
+          </response>
+        </method>
+        <resource path='{ACCOUNT_ID}'>
+          <method name='get' id='does_not_yet_exist'>
+            <response>
+              <representation mediaType='application/xml' />
+            </response>
+          </method>
+          <resource path='/authsystems/'>
+            <method name='post' id='add_auth_system'>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+          </resource> 
+          <resource path='/records/'>
+            <method name='get' id='read_records'>
+              <request>
+                <parameter name="limit" type="xsd:string" />
+                <parameter name="offset" type="xsd:string" />
+                <parameter name="order_by" type="xsd:string" />
+              </request>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+          </resource>
+          <resource path='/inbox/'>
+            <method name='post' id='message_account'>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+          </resource> 
+          <resource path='/notifications/{NOTIFICATION_ID}'>
+            <method name='put' id='put_message_notification'>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+          </resource> 
+        </resource>
+      </resource> 
+      <resource path='/apps/'>
+        <method name='get' id='does_not_yet_exist'>
+          <response>
+            <representation mediaType='application/xml' />
+          </response>
+        </method>
+        <resource path='{APP_ID}'>
+          <method name='get' id='does_not_yet_exist'>
+            <response>
+              <representation mediaType='application/xml' />
+            </response>
+          </method>
+          <method name='delete' id='delete_app'>
+            <response>
+              <representation mediaType='application/xml' />
+            </response>
+          </method>
+          <resource path='/apps/{APP_ID}/documents'>
+            <method name='post' id='post_app_document'>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+            <method name='get' id='read_app_documents'>
+              <request>
+                <parameter name="limit" type="xsd:string" />
+                <parameter name="offset" type="xsd:string" />
+                <parameter name="order_by" type="xsd:string" />
+              </request>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+            <resource path='/external/'>
+              <method name='get' id='does_not_yet_exist'>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+              <resource path='{EXTERNAL_ID}'>
+                <method name='put' id='post_app_document_ext'>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+              </resource> 
+              <resource path='{EXTERNAL_ID}/meta'>
+                <method name='get' id='read_app_document_ext_meta'>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+              </resource> 
+            </resource>
+            <resource path='{DOCUMENT_ID}'>
+              <method name='get' id='read_app_document'>
+                <request>
+                  <parameter name="limit" type="xsd:string" />
+                  <parameter name="offset" type="xsd:string" />
+                  <parameter name="order_by" type="xsd:string" />
+                </request>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+              <method name='put' id='create_or_replace_app_document'>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+              <method name='delete' id='remove_app_document'>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+              <resource path='/label'>
+                <method name='put' id='post_app_document_label'>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+              </resource> 
+              <resource path='/meta'>
+                <method name='get' id='read_app_document_meta'>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+              </resource> 
+            </resource>
+          </resource>
+        </resource> 
+      </resource>
+      <resource path='/codes/systems/{CODING_SYSTEM}/query'>
+        <method name='get' id='lookup_code'>
+          <request>
+            <parameter name="q" type="xsd:string" />
+            <parameter name="limit" type="xsd:string" />
+            <parameter name="offset" type="xsd:string" />
+            <parameter name="order_by" type="xsd:string" />
+          </request>
+          <response>
+            <representation mediaType='application/xml' />
+          </response>
+        </method>
+      </resource>
+      <resource path='/oauth/'> 
+        <resource path='access_token'>
+          <method name='get' id='get_access_token'>
+            <response>
+              <representation mediaType='application/xml' />
+            </response>
+          </method>
+          <method name='post' id='post_access_token'>
+            <response>
+              <representation mediaType='application/xml' />
+            </response>
+          </method>
+        </resource>
+        <resource path='authorize'>
+          <method name='get' id='get_authorize_token'>
+            <request>
+              <parameter name="oauth_token" type="xsd:string" />
+            </request>
+            <response>
+              <representation mediaType='application/xml' />
+            </response>
+          </method>
+        </resource>
+        <resource path='internal/'>
+          <resource path='request_tokens/{REQUEST_TOKEN}/claim'>
+            <method name='post' id='claim_request_token'>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+          </resource> 
+          <resource path='session_create'>
+            <method name='post' id='create_session'>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+          </resource> 
+        </resource>
+        <resource path='request_token'>
+          <method name='post' id='get_request_token'>
+            <response>
+              <representation mediaType='application/xml' />
+            </response>
+          </method>
+          <method name='post' id='post_request_token'>
+            <response>
+              <representation mediaType='application/xml' />
+            </response>
+          </method>
+        </resource>
+      </resource>
+      <resource path='/records/'>
+        <method name='post' id='create_record'>
+          <response>
+            <representation mediaType='application/xml' />
+          </response>
+        </method>
+        <resource path='external/{APP_ID}/{EXTERNAL_ID>'>
+          <method name='put' id='put_record_external'>
+            <response>
+              <representation mediaType='application/xml' />
+            </response>
+          </method>
+        </resource>
+        <resource path='{RECORD_ID}'>
+          <method name='get' id='read_record'>
+            <response>
+              <representation mediaType='application/xml' />
+            </response>
+          </method>
+          <resource path='/special/{SPECIAL_DOCUMENT}'>
+            <method name='get' id='read_special_document'>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+            <method name='put' id='put_special_document'>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+          </resource>
+          <resource path='/reports/'>
+            <resource path='minimal/immunizations/'>
+              <method name='get' id='read_immunizations'>
+                <request>
+                  <parameter name="limit" type="xsd:string" />
+                  <parameter name="offset" type="xsd:string" />
+                  <parameter name="order_by" type="xsd:string" />
+                </request>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+            </resource> 
+            <resource path='minimal/measurements/{LAB_CODE}/'>
+              <method name='get' id='read_measurements'>
+                <request>
+                  <parameter name="limit" type="xsd:string" />
+                  <parameter name="offset" type="xsd:string" />
+                  <parameter name="order_by" type="xsd:string" />
+                </request>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+            </resource> 
+            <resource path='minimal/allergies/'>
+              <method name='get' id='read_allergies'>
+                <request>
+                  <parameter name="limit" type="xsd:string" />
+                  <parameter name="offset" type="xsd:string" />
+                  <parameter name="order_by" type="xsd:string" />
+                </request>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+            </resource>
+            <resource path='minimal/equipment/'>
+              <method name='get' id='read_equipment'>
+                <request>
+                  <parameter name="limit" type="xsd:string" />
+                  <parameter name="offset" type="xsd:string" />
+                  <parameter name="order_by" type="xsd:string" />
+                </request>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+            </resource> 
+            <resource path='minimal/medications/'>
+              <method name='get' id='read_medications'>
+                <request>
+                  <parameter name="limit" type="xsd:string" />
+                  <parameter name="offset" type="xsd:string" />
+                  <parameter name="order_by" type="xsd:string" />
+                </request>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+            </resource> 
+            <resource path='minimal/problems/'>
+              <method name='get' id='read_problems'>
+                <request>
+                  <parameter name="limit" type="xsd:string" />
+                  <parameter name="offset" type="xsd:string" />
+                  <parameter name="order_by" type="xsd:string" />
+                </request>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+            </resource> 
+            <resource path='minimal/procedures/'>
+              <method name='get' id='read_procedures'>
+                <request>
+                  <parameter name="limit" type="xsd:string" />
+                  <parameter name="offset" type="xsd:string" />
+                  <parameter name="order_by" type="xsd:string" />
+                </request>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+            </resource> 
+            <resource path='minimal/vitals/'>
+              <method name='get' id='read_vitals'>
+                <request>
+                  <parameter name="limit" type="xsd:string" />
+                  <parameter name="offset" type="xsd:string" />
+                  <parameter name="order_by" type="xsd:string" />
+                </request>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+            </resource> 
+            <resource path='minimal/vitals/{CATEGORY}/'>
+              <method name='get' id='read_vitals_category'>
+                <request>
+                  <parameter name="limit" type="xsd:string" />
+                  <parameter name="offset" type="xsd:string" />
+                  <parameter name="order_by" type="xsd:string" />
+                </request>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+            </resource> 
+          </resource> 
+         <resource path='/notify'>
+            <method name='post' id='record_notify'>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+          </resource> 
+          <resource path='/owner'>
+            <method name='post' id='set_record_owner'>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+          </resource> 
+          <resource path='inbox/'>
+            <method name='get' id='get_messages'>
+              <request>
+                <parameter name="limit" type="xsd:string" />
+                <parameter name="offset" type="xsd:string" />
+                <parameter name="order_by" type="xsd:string" />
+              </request>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+            <resource path='{MESSAGE_ID}'>
+              <method name='post' id='message_record'>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+            </resource> 
+          </resource>
+          <resource path='/documents/'>
+            <method name='delete' id='delete_documents'>
+              <response>
+               <representation mediaType='application/xml' />
+              </response>
+            </method>
+            <method name='post' id='post_document'>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+            <method name='get' id='read_documents'>
+              <request>
+                <parameter name="limit" type="xsd:string" />
+                <parameter name="offset" type="xsd:string" />
+                <parameter name="order_by" type="xsd:string" />
+              </request>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+            <resource path='types/'>
+              <method name='get' id='does_not_yet_exit'>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+              <resource path='{TYPE_URL}/'>
+                <method name='get' id='read_document_types'>
+                  <request>
+                    <parameter name="limit" type="xsd:string" />
+                    <parameter name="offset" type="xsd:string" />
+                    <parameter name="order_by" type="xsd:string" />
+                  </request>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+              </resource>
+            </resource> 
+            <resource path='/external/{APP_ID}/{EXTERNAL_ID}/'>
+              <method name='get' id='does_not_yet_exist'>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+              <resource path='meta'>
+                <method name='get' id='get_document_external_meta'>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+              </resource>
+              <resource path='label'>
+                <method name='put' id='put_document_external_label'>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+              </resource>
+            </resource> 
+            <resource path='{DOCUMENT_ID}'>
+              <method name='get' id='read_document'>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+              <resource path='/replace'>
+                <method name='post' id='replace_document'>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+                <resource path='/external/{APP_ID}/{EXTERNAL_ID}'>
+                  <method name='put' id='put_document_external_replace'>
+                    <response>
+                      <representation mediaType='application/xml' />
+                    </response>
+                  </method>
+                </resource> 
+              </resource> 
+              <resource path='/rels/'>
+                <resource path='{REL_TYPE}'>
+                  <method name='get' id='get_document_relate'>
+                    <request>
+                      <parameter name="limit" type="xsd:string" />
+                      <parameter name="offset" type="xsd:string" />
+                      <parameter name="order_by" type="xsd:string" />
+                    </request>
+                    <response>
+                      <representation mediaType='application/xml' />
+                    </response>
+                  </method>
+                  <method name='post' id='post_document_relate_given'>
+                    <response>
+                      <representation mediaType='application/xml' />
+                    </response>
+                  </method>
+                </resource>
+                <resource path='/external/{APP_ID}/{EXTERNAL_ID}'>
+                  <method name='get' id='put_document_relate_external'>
+                    <response>
+                      <representation mediaType='application/xml' />
+                    </response>
+                  </method>
+                </resource> 
+                <resource path='/{OTHER_DOCUMENT_ID}'>
+                  <method name='put' id='put_document_relate_existing'>
+                    <response>
+                      <representation mediaType='application/xml' />
+                    </response>
+                  </method>
+                </resource> 
+              </resource>
+              <resource path='/label'>
+                <method name='put' id='post_document_label'>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+              </resource> 
+              <resource path='/meta'>
+                <method name='get' id='read_document_meta'>
+                  <request>
+                    <parameter name="limit" type="xsd:string" />
+                    <parameter name="offset" type="xsd:string" />
+                    <parameter name="order_by" type="xsd:string" />
+                  </request>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+              </resource>
+              <resource path='/versions/'>
+                <method name='get' id='read_document_versions'>
+                  <request>
+                    <parameter name="limit" type="xsd:string" />
+                    <parameter name="offset" type="xsd:string" />
+                    <parameter name="order_by" type="xsd:string" />
+                  </request>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+              </resource> 
+            </resource>
+          </resource>
+          <resource path='/audits/'>
+            <method name='get' id='read_record_audit'>
+              <request>
+                <parameter name="limit" type="xsd:string" />
+                <parameter name="offset" type="xsd:string" />
+                <parameter name="order_by" type="xsd:string" />
+              </request>
+              <response>
+                <representation mediaType='application/xml' />
+              </response>
+            </method>
+            <resource path='documents/'>
+              <resource path='{DOCUMENT_ID}/'>
+                <method name='get' id='read_document_audit'>
+                  <request>
+                    <parameter name="limit" type="xsd:string" />
+                    <parameter name="offset" type="xsd:string" />
+                    <parameter name="order_by" type="xsd:string" />
+                  </request>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+                <resource path='functions/{FUNCTION_NAME}/'>
+                  <method name='get' id='read_function_audit'>
+                    <request>
+                      <parameter name="limit" type="xsd:string" />
+                      <parameter name="offset" type="xsd:string" />
+                      <parameter name="order_by" type="xsd:string" />
+                    </request>
+                    <response>
+                      <representation mediaType='application/xml' />
+                    </response>
+                  </method>
+                </resource>
+              </resource>
+            </resource>
+          </resource>
+        </resource> 
+        <resource path='/apps/'>
+          <resource path='{APP_ID}'>
+            <resource path='/documents/'>
+              <method name='get' id='does_not_yet_exist'>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+              <resource path='{DOCUMENT_ID}'>
+                <method name='get' id='get_recapp_document'>
+                  <request>
+                    <parameter name="limit" type="xsd:string" />
+                    <parameter name="offset" type="xsd:string" />
+                    <parameter name="order_by" type="xsd:string" />
+                  </request>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+                <method name='delete' id='delete_recapp_document'>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+                <method name='put' id='put_recapp_document_create_or_replace'>
+                  <response>
+                    <representation mediaType='application/xml' />
+                  </response>
+                </method>
+                <resource path='/label'>
+                  <method name='put' id='put_recapp_document_label'>
+                    <response>
+                      <representation mediaType='application/xml' />
+                    </response>
+                  </method>
+                </resource> 
+                <resource path='/meta'>
+                  <method name='get' id='get_recapp_document_meta'>
+                    <response>
+                      <representation mediaType='application/xml' />
+                    </response>
+                  </method>
+                </resource> 
+              </resource>
+            </resource>
+            <resource path='/setup'>
+              <method name='post' id='setup_app'>
+                <response>
+                  <representation mediaType='application/xml' />
+                </response>
+              </method>
+            </resource>
+          </resource>
+        </resource>
+      </resource>
+  </resources>
+</application>

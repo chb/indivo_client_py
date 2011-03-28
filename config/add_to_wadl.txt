@@ -1,0 +1,14 @@
+    GET /records/{record_id}/carenets/{carenet_id}/documents/?type={indivo_document_type_url}
+    GET /records/{record_id}/carenets/{carenet_id}/reports/minimal/immunizations/
+    GET /records/{record_id}/carenets/
+    PUT /records/{record_id}/documents/{document_id}/carenets/{carenet_id}
+    DELETE /records/{record_id}/documents/{document_id}/carenets/{carenet_id}
+    POST /records/{record_id}/documents/{document_id}/carenets/{carenet_id}/autoshare-revert
+    GET /records/{record_id}/documents/{document_id}/carenets/
+    GET /records/{record_id}/autoshare/bytype/?type={indivo_document_type}
+    POST /records/{record_id}/autoshare/carenets/{carenet_id}/bytype/set
+    GET /records/{record_id}/carenets/{carenet_id}/apps/
+    GET /records/{record_id}/carenets/{carenet_id}/people/
+    POST /records/{record_id}/carenets/{carenet_id}/people/
+    DELETE /records/{record_id}/carenets/{carenet_id}/people/{account_id}
+
