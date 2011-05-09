@@ -329,21 +329,19 @@
   </method>
   <method>
     <call name='read_record_audit' method='get' url='/records/{RECORD_ID}/audits/?{PARAMETERS}' />
-    <response element='AuditLog' attribute=''>
-      <response element='Entry' attribute='principal' />
-    </response>
+    <response />
   </method>
   <method>
     <call name='read_document_audit' method='get' url='/records/{RECORD_ID}/audits/documents/{DOCUMENT_ID}/?{PARAMETERS}' />
-    <response element='AuditLog' attribute=''>
-      <response element='Entry' attribute='principal' />
-    </response>
+    <response />
   </method>
   <method>
     <call name='read_function_audit' method='get' url='/records/{RECORD_ID}/audits/documents/{DOCUMENT_ID}/functions/{FUNCTION_NAME}/?{PARAMETERS}' />
-    <response element='AuditLog' attribute=''>
-      <response element='Entry' attribute='principal' />
-    </response>
+    <response />
+  </method>
+  <method>
+    <call name='query_audit' method='get' url='/records/{RECORD_ID}/audits/query/?{PARAMETERS}' />
+    <response />
   </method>
   <method>
     <call name='delete_app' method='delete' url='/apps/{APP_ID}' />

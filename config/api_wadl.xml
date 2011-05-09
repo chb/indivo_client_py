@@ -244,6 +244,14 @@
                   <parameter name="limit" type="xsd:string" />
                   <parameter name="offset" type="xsd:string" />
                   <parameter name="order_by" type="xsd:string" />
+		  <parameter name="status" type="xsd:string" />
+		  <parameter name="date_range" type="xsd:string" />
+		  <parameter name="group_by" type="xsd:string" />
+		  <parameter name="date_group" type="xsd:string" />
+		  <parameter name="aggregate_by" type="xsd:string" />
+		  <parameter name="date_administered" type="xsd:dateTime" />
+		  <parameter name="vaccine_type" type="xsd:string" />
+		  <parameter name="created_at" type="xsd:dateTime" />
                 </request>
                 <response>
                   <representation mediaType='application/xml' />
@@ -253,9 +261,18 @@
             <resource path='minimal/measurements/{LAB_CODE}/'>
               <method name='get' id='read_measurements'>
                 <request>
-                  <parameter name="limit" type="xsd:string" />
+		  <parameter name="limit" type="xsd:string" />
                   <parameter name="offset" type="xsd:string" />
                   <parameter name="order_by" type="xsd:string" />
+		  <parameter name="status" type="xsd:string" />
+		  <parameter name="date_range" type="xsd:string" />
+		  <parameter name="group_by" type="xsd:string" />
+		  <parameter name="date_group" type="xsd:string" />
+		  <parameter name="aggregate_by" type="xsd:string" />
+		  <parameter name="date_measured" type="xsd:dateTime" />
+		  <parameter name="value" type="xsd:float" />
+		  <parameter name="lab_code" type="xsd:string" />
+		  <parameter name="created_at" type="xsd:dateTime" />
                 </request>
                 <response>
                   <representation mediaType='application/xml' />
@@ -265,9 +282,18 @@
             <resource path='minimal/allergies/'>
               <method name='get' id='read_allergies'>
                 <request>
-                  <parameter name="limit" type="xsd:string" />
+		  <parameter name="limit" type="xsd:string" />
                   <parameter name="offset" type="xsd:string" />
                   <parameter name="order_by" type="xsd:string" />
+		  <parameter name="status" type="xsd:string" />
+		  <parameter name="date_range" type="xsd:string" />
+		  <parameter name="group_by" type="xsd:string" />
+		  <parameter name="date_group" type="xsd:string" />
+		  <parameter name="aggregate_by" type="xsd:string" />
+		  <parameter name="date_diagnosed" type="xsd:dateTime" />
+		  <parameter name="allergen_type" type="xsd:string" />
+		  <parameter name="allergen_name" type="xsd:string" />
+		  <parameter name="created_at" type="xsd:dateTime" />
                 </request>
                 <response>
                   <representation mediaType='application/xml' />
@@ -277,9 +303,19 @@
             <resource path='minimal/equipment/'>
               <method name='get' id='read_equipment'>
                 <request>
-                  <parameter name="limit" type="xsd:string" />
+		  <parameter name="limit" type="xsd:string" />
                   <parameter name="offset" type="xsd:string" />
                   <parameter name="order_by" type="xsd:string" />
+		  <parameter name="status" type="xsd:string" />
+		  <parameter name="date_range" type="xsd:string" />
+		  <parameter name="group_by" type="xsd:string" />
+		  <parameter name="date_group" type="xsd:string" />
+		  <parameter name="aggregate_by" type="xsd:string" />
+		  <parameter name="date_started" type="xsd:dateTime" />
+		  <parameter name="date_stopped" type="xsd:dateTime" />
+		  <parameter name="equipment_vendor" type="xsd:string" />
+		  <parameter name="equipment_name" type="xsd:string" />
+		  <parameter name="created_at" type="xsd:dateTime" />
                 </request>
                 <response>
                   <representation mediaType='application/xml' />
@@ -289,9 +325,19 @@
             <resource path='minimal/medications/'>
               <method name='get' id='read_medications'>
                 <request>
-                  <parameter name="limit" type="xsd:string" />
+		  <parameter name="limit" type="xsd:string" />
                   <parameter name="offset" type="xsd:string" />
                   <parameter name="order_by" type="xsd:string" />
+		  <parameter name="status" type="xsd:string" />
+		  <parameter name="date_range" type="xsd:string" />
+		  <parameter name="group_by" type="xsd:string" />
+		  <parameter name="date_group" type="xsd:string" />
+		  <parameter name="aggregate_by" type="xsd:string" />
+		  <parameter name="date_started" type="xsd:dateTime" />
+		  <parameter name="date_stopped" type="xsd:dateTime" />
+		  <parameter name="medication_brand_name" type="xsd:string" />
+		  <parameter name="medication_name" type="xsd:string" />
+		  <parameter name="created_at" type="xsd:dateTime" />
                 </request>
                 <response>
                   <representation mediaType='application/xml' />
@@ -301,9 +347,18 @@
             <resource path='minimal/problems/'>
               <method name='get' id='read_problems'>
                 <request>
-                  <parameter name="limit" type="xsd:string" />
+		  <parameter name="limit" type="xsd:string" />
                   <parameter name="offset" type="xsd:string" />
                   <parameter name="order_by" type="xsd:string" />
+		  <parameter name="status" type="xsd:string" />
+		  <parameter name="date_range" type="xsd:string" />
+		  <parameter name="group_by" type="xsd:string" />
+		  <parameter name="date_group" type="xsd:string" />
+		  <parameter name="aggregate_by" type="xsd:string" />
+		  <parameter name="date_onset" type="xsd:dateTime" />
+		  <parameter name="date_resolution" type="xsd:dateTime" />
+		  <parameter name="problem_name" type="xsd:string" />
+		  <parameter name="created_at" type="xsd:dateTime" />
                 </request>
                 <response>
                   <representation mediaType='application/xml' />
@@ -313,9 +368,17 @@
             <resource path='minimal/procedures/'>
               <method name='get' id='read_procedures'>
                 <request>
-                  <parameter name="limit" type="xsd:string" />
+		  <parameter name="limit" type="xsd:string" />
                   <parameter name="offset" type="xsd:string" />
                   <parameter name="order_by" type="xsd:string" />
+		  <parameter name="status" type="xsd:string" />
+		  <parameter name="date_range" type="xsd:string" />
+		  <parameter name="group_by" type="xsd:string" />
+		  <parameter name="date_group" type="xsd:string" />
+		  <parameter name="aggregate_by" type="xsd:string" />
+		  <parameter name="date_performed" type="xsd:dateTime" />
+		  <parameter name="procedure_name" type="xsd:string" />
+		  <parameter name="created_at" type="xsd:dateTime" />
                 </request>
                 <response>
                   <representation mediaType='application/xml' />
@@ -325,9 +388,18 @@
             <resource path='minimal/vitals/'>
               <method name='get' id='read_vitals'>
                 <request>
-                  <parameter name="limit" type="xsd:string" />
+		  <parameter name="limit" type="xsd:string" />
                   <parameter name="offset" type="xsd:string" />
                   <parameter name="order_by" type="xsd:string" />
+		  <parameter name="status" type="xsd:string" />
+		  <parameter name="date_range" type="xsd:string" />
+		  <parameter name="group_by" type="xsd:string" />
+		  <parameter name="date_group" type="xsd:string" />
+		  <parameter name="aggregate_by" type="xsd:string" />
+		  <parameter name="date_measured" type="xsd:dateTime" />
+		  <parameter name="category" type="xsd:string" />
+		  <parameter name="value" type="xsd:float" />
+		  <parameter name="created_at" type="xsd:dateTime" />
                 </request>
                 <response>
                   <representation mediaType='application/xml' />
@@ -337,9 +409,17 @@
             <resource path='minimal/vitals/{CATEGORY}/'>
               <method name='get' id='read_vitals_category'>
                 <request>
-                  <parameter name="limit" type="xsd:string" />
+		  <parameter name="limit" type="xsd:string" />
                   <parameter name="offset" type="xsd:string" />
                   <parameter name="order_by" type="xsd:string" />
+		  <parameter name="status" type="xsd:string" />
+		  <parameter name="date_range" type="xsd:string" />
+		  <parameter name="group_by" type="xsd:string" />
+		  <parameter name="date_group" type="xsd:string" />
+		  <parameter name="aggregate_by" type="xsd:string" />
+		  <parameter name="date_measured" type="xsd:dateTime" />
+		  <parameter name="value" type="xsd:float" />
+		  <parameter name="created_at" type="xsd:dateTime" />
                 </request>
                 <response>
                   <representation mediaType='application/xml' />
@@ -564,6 +644,30 @@
                 </resource>
               </resource>
             </resource>
+	    <resource path='query/'>
+	      <method name='get' id='query_audit'>
+		<request>
+		  <parameter name="limit" type="xsd:string" />
+		  <parameter name="offset" type="xsd:string" />
+		  <parameter name="order_by" type="xsd:string" />
+		  <parameter name="status" type="xsd:string" />
+		  <parameter name="date_range" type="xsd:string" />
+		  <parameter name="group_by" type="xsd:string" />
+		  <parameter name="date_group" type="xsd:string" />
+		  <parameter name="aggregate_by" type="xsd:string" />
+		  <parameter name="document_id" type="xsd:string" />
+		  <parameter name="external_id" type="xsd:string" />
+		  <parameter name="request_date" type="xsd:dateTime" />
+		  <parameter name="function_name" type="xsd:string" />
+		  <parameter name="principal_email" type="xsd:string" />
+		  <parameter name="proxied_by_email" type="xsd:string" />
+		  <parameter name="created_at" type="xsd:dateTime" />
+		</request>
+		<response>
+		  <representation mediaType='application/xml' />
+		</response>
+	      </method>
+	    </resource>
           </resource>
         </resource> 
         <resource path='/apps/'>
