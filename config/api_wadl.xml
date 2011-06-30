@@ -560,7 +560,7 @@
                   </method>
                 </resource>
                 <resource path='/external/{APP_ID}/{EXTERNAL_ID}'>
-                  <method name='get' id='put_document_relate_external'>
+                  <method name='put' id='put_document_relate_external'>
                     <response>
                       <representation mediaType='application/xml' />
                     </response>

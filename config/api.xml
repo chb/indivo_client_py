@@ -173,7 +173,7 @@
     <response element='Record' attribute='id' />
   </method>
   <method>
-    <call name='put_document_relate_ext' method='get' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/rels/{REL_TYPE}/external/{APP_ID}/{EXTERNAL_ID}' />
+    <call name='put_document_relate_ext' method='put' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/rels/{REL_TYPE}/external/{APP_ID}/{EXTERNAL_ID}' />
     <response />
   </method>
   <method>
