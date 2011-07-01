@@ -550,6 +550,14 @@
     <response />
   </method>
   <method>
+    <call name='delete_carenet' method='delete' url='/carenets/{CARENET_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='rename_carenet' method='post' url='/carenets/{CARENET_ID}/rename' />
+    <response />
+  </method>
+  <method>
     <call name='get_record_carenets' method='get' url='/records/{RECORD_ID}/carenets/' />
     <response element='Carenets' attribute='record_id'>
       <response element='Carenet' attribute='id' />
