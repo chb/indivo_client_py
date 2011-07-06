@@ -397,10 +397,6 @@
     <call name='delete_documents' method='delete' url='/records/{RECORD_ID}/documents/' />
     <response />
   </method>
-  <method>
-    <call name='delete_document' method='delete' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}' />
-    <response />
-  </method>
 
   <!-- Reports -->
   <method>
