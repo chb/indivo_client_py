@@ -119,7 +119,8 @@ class APIConnector:
       # SZ: Abstarct this out
       prd_vals = {'Account' : 'account_id', 'Document' : 'document_id', 'Record' : 'record_id'}
       for prd_name, attr in prd_vals.items():
-        if response.has_key(PRD) and \
+        if response and \
+          response.has_key(PRD) and \
           isinstance(cr.response[PRD], dict) and \
           response[PRD].has_key(prd_name):
           id = response[PRD][prd_name]

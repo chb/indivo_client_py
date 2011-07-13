@@ -24,8 +24,11 @@ from iaux import HTTP, Url, Reserved, Chars
 
 class IUtilsError(Exception):
 
-  def __init__(self, value):
-    self.value = value
+  def __init__(self, value, info=None):
+    if info is not None:
+      self.value = '%s: %s' % (value, info)
+    else:
+      self.value = value
 
   def __str__(self):
     return repr(self.value)
@@ -79,6 +82,7 @@ class IUtils(OAuth):
 
       # Make request
       connection.request(method, uri, parameters, headers = oauth_header)
+      
       # Get response
       resp = connection.getresponse()
       retval[self.HTTP.ContentTypes.content_type] = self.empty_string
@@ -124,8 +128,8 @@ class IUtils(OAuth):
       raise IUtilsError(self.HTTP.Errors.not_connected)
     except httplib.CannotSendHeader:
       raise IUtilsError(self.HTTP.Errors.cannot_send_header)
-    except socket.error:
-      raise IUtilsError(self.HTTP.Errors.socket_error)
+    except socket.error, e:
+      raise IUtilsError(self.HTTP.Errors.socket_error, e.strerror)
     except Exception():
       raise IUtilsError(self.HTTP.Errors.general_exception)
 
@@ -140,7 +144,7 @@ class IUtils(OAuth):
         isinstance(method, unicode):
         method = method.upper()
       else:
-        return False
+        return None
 
       if app_info.__contains__(self.res.oauth_token) and \
           app_info.__contains__(self.res.oauth_token_secret):
@@ -156,9 +160,10 @@ class IUtils(OAuth):
                       content_type=content_type)
       self.request_response_info[self.res.Debug.oauth_header] = oauth_header
       self.request_response_info[self.res.Debug.data] = data
+      
       return self._http_request(method, oauth_header, data)
-    else:
-      return False
+      
+    return None
 
   def get_content_type(self, parameters, data):
     if not self.is_binary(data):
@@ -216,7 +221,7 @@ class IUtils(OAuth):
           # Assume Plain
           return self.read_text(response_data[self.HTTP.content])
     else:
-      return False
+      return None
 
   def read_text(self, plaintext):
     retval = {}
@@ -360,7 +365,7 @@ class IUtils(OAuth):
     # Reset debug info
     self.request_response_info = {}
     parameters = {}
-
+    
     # Include parameters
     if kwargs.has_key(self.res.parameters) and \
         kwargs[self.res.parameters] and \
@@ -374,22 +379,25 @@ class IUtils(OAuth):
       # Set the parameters
       parameters = kwargs[self.res.parameters]
       kwargs[self.res.parameters] = urllib.urlencode(parameters)
-
+    
     # Call http_conn(...)
     if api_method and api_url:
       self.request_response_info[self.res.Debug.method] = api_method
-      retval = self.read_resp(
-            self.http_conn(api_method, 
-              self.convert_api_url(
-                api_url, kwargs
-              ), app_info, parameters, req_data), 
-          resp_data_loc)
-      # PRD - Processed Response Data
-      self.request_response_info['prd'] = retval
+      
+      url = self.convert_api_url(api_url, kwargs)
+      try:
+        res = self.http_conn(api_method, url, app_info, parameters, req_data)
+        if res is not None:
+          retval = self.read_resp(res, resp_data_loc)
+          # PRD - Processed Response Data
+          self.request_response_info['prd'] = retval
+      except IUtilsError, e:
+        self.request_response_info['response_status'] = 500         # maybe also ship the error number via the exception?
+        self.request_response_info['response_data'] = e.value
+    
     if kwargs[self.res.Debug.debug]: 
       self.print_debug_info()
-    if retval is None:
-      return False
+    
     return self.request_response_info
 
   def rebuild_kwargs(self, kwargs):

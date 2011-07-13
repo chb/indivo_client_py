@@ -379,7 +379,7 @@ class OAuthRequest(object):
     # join and escape
     sbs = '&'.join([escape(part) for part in [normalized_method, normalized_path, normalized_parameters]])
 
-    logging.debug("sbs: %s" % sbs)
+    #logging.debug("sbs: %s" % sbs)
     return sbs
 
   def get_signature_method(self):
