@@ -64,6 +64,8 @@ class IUtils(OAuth):
             if method == "GET":
                 self.url.query = parameters
                 parameters = None
+            elif parameters == '':
+                parameters = None
 
             # moved this here after query is regenerated (Ben)
             if len(self.url.query) > 0:

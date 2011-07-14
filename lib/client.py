@@ -103,7 +103,11 @@ class APIConnector:
     #if options.has_key(OAUTH_TOKEN): oauth_token = options[OAUTH_TOKEN]
     #if options.has_key(OAUTH_TOKEN_SECRET): oauth_token_secret = options[OAUTH_TOKEN_SECRET]
     if self.ds.app_info:
-      retval = self.utils_obj.http_conn(method, url, self.ds.app_info, parameters=parameters, data=data)
+      try:
+        retval = self.utils_obj.http_conn(method, url, self.ds.app_info, parameters=parameters, data=data)
+      except:
+        return False
+      
       if retval:
         if isinstance(retval, dict) and retval.has_key(CONTENT):
           return retval[CONTENT]
@@ -252,7 +256,7 @@ class IndivoClient(APIConnector):
       password = user.get('user_pass', '')
 
       # There is a difference between app_type chrome without auth and admin
-      return self.api.call(  self.ds.app_info,
+      return self.api.call(self.ds.app_info,
                             { 'account_id'          : account_id,
                               'primary_secret_p'    : primary_secret,
                               'secondary_secret_p'  : secondary_secret,
@@ -267,12 +271,20 @@ class IndivoClient(APIConnector):
 
   def create_session(self, user):
     if user.has_key('username') and user.has_key('user_pass'):
-      chrome_auth   = {'username' : user['username'], 'password' : user['user_pass']}
-      chrome_token = self.api.call(self.ds.app_info, chrome_auth)['prd']
+      chrome_auth = {'username': user['username'], 'password': user['user_pass']}
+      res = self.api.call(self.ds.app_info, chrome_auth)
+      chrome_token = res.get('prd', None)
+      status = res.get('response_status', 500)
+      if 200 != status:
+        raise IOError(status, chrome_token or res.get('response_data', 'Unknown Server Error'))
+      
+      # we got something after a 200, pass it on
       if isinstance(chrome_token, dict):
         self.ds.app_info.update(chrome_token)
         return chrome_token
-    return False
+    
+    # this previously simply returned False
+    raise IOError(400, 'No username or no password supplied')
 
   def update_token(self, oauth_token={}):
     if oauth_token and \

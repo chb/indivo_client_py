@@ -173,7 +173,7 @@
     <response element='Record' attribute='id' />
   </method>
   <method>
-    <call name='put_document_relate_ext' method='get' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/rels/{REL_TYPE}/external/{APP_ID}/{EXTERNAL_ID}' />
+    <call name='put_document_relate_ext' method='put' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}/rels/{REL_TYPE}/external/{APP_ID}/{EXTERNAL_ID}' />
     <response />
   </method>
   <method>
@@ -329,21 +329,19 @@
   </method>
   <method>
     <call name='read_record_audit' method='get' url='/records/{RECORD_ID}/audits/?{PARAMETERS}' />
-    <response element='AuditLog' attribute=''>
-      <response element='Entry' attribute='principal' />
-    </response>
+    <response />
   </method>
   <method>
     <call name='read_document_audit' method='get' url='/records/{RECORD_ID}/audits/documents/{DOCUMENT_ID}/?{PARAMETERS}' />
-    <response element='AuditLog' attribute=''>
-      <response element='Entry' attribute='principal' />
-    </response>
+    <response />
   </method>
   <method>
     <call name='read_function_audit' method='get' url='/records/{RECORD_ID}/audits/documents/{DOCUMENT_ID}/functions/{FUNCTION_NAME}/?{PARAMETERS}' />
-    <response element='AuditLog' attribute=''>
-      <response element='Entry' attribute='principal' />
-    </response>
+    <response />
+  </method>
+  <method>
+    <call name='query_audit' method='get' url='/records/{RECORD_ID}/audits/query/?{PARAMETERS}' />
+    <response />
   </method>
   <method>
     <call name='delete_app' method='delete' url='/apps/{APP_ID}' />
@@ -397,10 +395,6 @@
   </method>
   <method>
     <call name='delete_documents' method='delete' url='/records/{RECORD_ID}/documents/' />
-    <response />
-  </method>
-  <method>
-    <call name='delete_document' method='delete' url='/records/{RECORD_ID}/documents/{DOCUMENT_ID}' />
     <response />
   </method>
 
@@ -549,6 +543,14 @@
   </method>
   <method>
     <call name='create_carenet' method='post' url='/records/{RECORD_ID}/carenets/' />
+    <response />
+  </method>
+  <method>
+    <call name='delete_carenet' method='delete' url='/carenets/{CARENET_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='rename_carenet' method='post' url='/carenets/{CARENET_ID}/rename' />
     <response />
   </method>
   <method>
