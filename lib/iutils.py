@@ -394,7 +394,7 @@ class IUtils(OAuth):
                     retval = self.read_resp(res, resp_data_loc)
                     # PRD - Processed Response Data
                     self.request_response_info['prd'] = retval
-            except IUtilsError, e:
+            except IUtilsError as e:
                 self.request_response_info['response_status'] = 500                 # maybe also ship the error number via the exception?
                 self.request_response_info['response_data'] = e.value
         
