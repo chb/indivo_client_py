@@ -114,8 +114,8 @@ class CreateAPI():
             self.char.space + \
             app_info + \
             self.char.comma + \
-            sparams + \
             self.char.space + \
+            sparams + \
             data + \
             self.char.eq + \
             'None' + \
