@@ -1,6 +1,8 @@
 This Branch is a version of the client specifically intended to run
 against the Django test client. Instead of sending requests over the wire,
-it pipes them into a django test client provided on initialization.
+it pipes them into a django test client provided on initialization. It is 
+thus only functional if used within the context of a django application
+like indivo_server.
 
 BEFORE FIRST USE: You must generate the /lib/api.py file by:
 
