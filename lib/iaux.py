@@ -40,6 +40,10 @@ class HTTP:
   # from httplib.HTTPConnection.getheaders()
   content_type = 'content-type'
 
+  # This is the actual spelling of content type
+  # returned in an HTTP request
+  content_type_raw = 'Content-Type'
+
   class Status:
     ok                = 200
     redirect          = 302

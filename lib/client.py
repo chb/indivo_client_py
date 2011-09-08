@@ -3,6 +3,8 @@ import sys
 import inspect
 import traceback
 
+from django.test.client import Client
+
 API_FILENAME = 'api'
 
 try:
@@ -68,20 +70,21 @@ class APIConnector:
   def __init__(self, consumer_key, consumer_secret, connection_params=None):
 
     self.scheme = 'http'
-    self.host = 'localhost'
+    self.host = 'testserver'
     #self.host = 'indivo.genepartnership.org'
     #self.host = 'indivo-staging.informedcohort.org'
     #self.host = 'indivobig.genepartnership.org'
     #self.host = 'x-staging.indivo.org'
-    self.port = '8000'
+    self.port = '80'
 
     if connection_params:
       if connection_params.has_key('scheme'): self.scheme = connection_params['scheme']
       if connection_params.has_key('host'):   self.host = connection_params['host']
       if connection_params.has_key('port'):   self.port = connection_params['port']
 
+    django_client = Client()
     if self.scheme and self.host and self.port:
-      self.utils_obj = IUtils(self.scheme, self.host, self.port)
+      self.utils_obj = IUtils(self.scheme, self.host, self.port, django_client)
     else:
       raise APIConnectorError("Scheme, host, port needed")
 

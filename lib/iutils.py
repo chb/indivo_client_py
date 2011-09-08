@@ -34,7 +34,7 @@ class IUtilsError(Exception):
 class IUtils(OAuth):
 
 
-  def __init__(self, scheme, host, port):
+  def __init__(self, scheme, host, port, client):
     self.request_response_info = {}
     signature = {'call' : ['name', 'method', 'url'], 'response' : ['element', 'attribute']}
 
@@ -49,87 +49,64 @@ class IUtils(OAuth):
     self.wd = self.chars.slash.join(__file__.split(self.chars.slash)[0:-2])
     self.api, unused = xml_utils.xml2dict(path_home + '/config/api.xml', signature)
     self.url = Url(scheme, host, port)
+    self.client = client
 
-  def _http_request(self, method, oauth_header, parameters):
+  def _http_request(self, method, oauth_header, parameters, content_type):
     retval = {}
-    try:
-      uri = self.url.path
-      if isinstance(parameters, dict):
-        parameters = urllib.urlencode(parameters)
+    uri = self.url.path
+    if isinstance(parameters, dict):
+      parameters = urllib.urlencode(parameters)
 
-      # temporary hack (Ben)
-      if method == "GET":
-        self.url.query = parameters
-        parameters = None
-      elif parameters == '':
-        parameters = None
+    # temporary hack (Ben)
+    if method == "GET":
+      self.url.query = parameters
+      parameters = None
+    elif parameters == '':
+      parameters = None
 
-      # moved this here after query is regenerated (Ben)
-      if len(self.url.query) > 0:
-        uri = self.url.path + self.chars.qm + self.url.query
+    # moved this here after query is regenerated (Ben)
+    if len(self.url.query) > 0:
+      uri = self.url.path + self.chars.qm + self.url.query
 
-      if self.url.scheme == self.HTTP.https:
-        connection = httplib.HTTPSConnection(self.url.host + self.url.portext)
-      elif self.url.scheme == self.HTTP.http:
-        connection = httplib.HTTPConnection(self.url.host + self.url.portext)
+    # Make request, using Django's internal client instead of sending it over the wire
+    client_method = method.lower()
+    client_func = getattr(self.client, client_method)
+    if method == 'get' or method == 'delete':
+      resp = client_func(uri, **oauth_header)
+    elif not parameters:
+      resp = client_func(uri, content_type=content_type, data='', **oauth_header)
+    else:
+      resp = client_func(uri, content_type=content_type, data=parameters, **oauth_header) 
 
-      #######################
-      # SZ: for debugging   #
-      #######################
-      #print self.url.url
-      #connection.debuglevel = 1
-
-      # Make request
-      connection.request(method, uri, parameters, headers = oauth_header)
-      # Get response
-      resp = connection.getresponse()
+    if resp[self.HTTP.content_type_raw]:
+      retval[self.HTTP.ContentTypes.content_type] = resp[self.HTTP.content_type_raw]
+    else:
       retval[self.HTTP.ContentTypes.content_type] = self.empty_string
-      for header in resp.getheaders():
-        if header[0] == self.HTTP.content_type:
-          retval[self.HTTP.ContentTypes.content_type] = header[1]
-      self.request_response_info[self.res.Debug.status] = resp.status
-      self.request_response_info[self.res.Debug.content_type] = retval[self.HTTP.ContentTypes.content_type]
+    self.request_response_info[self.res.Debug.status] = resp.status_code
+    self.request_response_info[self.res.Debug.content_type] = retval[self.HTTP.ContentTypes.content_type]
 
-      #######################
-      # SZ: for debugging   #
-      #######################
-      #print self.chars.newline + self.chars.newline
-
-      # Handle status
-      if resp.status == self.HTTP.Status.ok:
-        retval[self.HTTP.content] = resp.read().strip(self.chars.newline)
-        return retval
-      elif resp.status == self.HTTP.Status.permission_denied:
-        return self.HTTP.Errors.permission_denied + \
-                self.chars.colon + \
-                resp.read().strip(self.chars.newline)
-      elif resp.status == self.HTTP.Status.not_found:
-        retval[self.HTTP.content] = resp.read().strip(self.chars.newline)
-        return retval
-      elif resp.status == self.HTTP.Status.redirect:
-        retval[self.HTTP.content] = resp.read().strip(self.chars.newline)
-        return retval
-      elif resp.status == self.HTTP.Status.invalid_request:
-        retval[self.HTTP.content] = resp.read().strip(self.chars.newline)
-        return retval
-      elif resp.status == self.HTTP.Status.server_error:
-        raise IUtilsError('Server Error')
-        #return self.HTTP.Errors.server_error
-      else:
-        raise IUtilsError(str(resp.status) + self.chars.colon + self.chars.space + uri)
-      # Handle Exceptions
-    except httplib.ResponseNotReady:
-      raise IUtilsError(self.HTTP.Errors.server_not_ready)
-    except httplib.CannotSendRequest:
-      raise IUtilsError(self.HTTP.Errors.cannot_send_request)
-    except httplib.NotConnected:
-      raise IUtilsError(self.HTTP.Errors.not_connected)
-    except httplib.CannotSendHeader:
-      raise IUtilsError(self.HTTP.Errors.cannot_send_header)
-    except socket.error:
-      raise IUtilsError(self.HTTP.Errors.socket_error)
-    except Exception():
-      raise IUtilsError(self.HTTP.Errors.general_exception)
+    # Handle status
+    if resp.status_code == self.HTTP.Status.ok:
+      retval[self.HTTP.content] = resp.content.strip(self.chars.newline)
+      return retval
+    elif resp.status_code == self.HTTP.Status.permission_denied:
+      return self.HTTP.Errors.permission_denied + \
+          self.chars.colon + \
+          resp.content.strip(self.chars.newline)
+    elif resp.status_code == self.HTTP.Status.not_found:
+      retval[self.HTTP.content] = resp.content.strip(self.chars.newline)
+      return retval
+    elif resp.status_code == self.HTTP.Status.redirect:
+      retval[self.HTTP.content] = resp.content.strip(self.chars.newline)
+      return retval
+    elif resp.status_code == self.HTTP.Status.invalid_request:
+      retval[self.HTTP.content] = resp.content.strip(self.chars.newline)
+      return retval
+    elif resp.status_code == self.HTTP.Status.server_error:
+      raise IUtilsError('Server Error')
+      # return self.HTTP.Errors.server_error
+    else:
+      raise IUtilsError(str(resp.status_code) + self.chars.colon + self.chars.space + uri)
 
   def http_conn(self, method, url, app_info, parameters=None, data=None):
     """ """
@@ -158,7 +135,7 @@ class IUtils(OAuth):
                       content_type=content_type)
       self.request_response_info[self.res.Debug.oauth_header] = oauth_header
       self.request_response_info[self.res.Debug.data] = data
-      return self._http_request(method, oauth_header, data)
+      return self._http_request(method, oauth_header, data, content_type)
     else:
       return False
 
