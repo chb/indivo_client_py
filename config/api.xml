@@ -48,7 +48,7 @@
     <call name='account_search' method='get' url='/accounts/search?{PARAMETERS}' />
   </method>
   <method>
-    <call name='account_forgot_password' method='get' url='/accounts/forgot-password?{PARAMETERS}' />
+    <call name='account_forgot_password' method='post' url='/accounts/{ACCOUNT_ID}/forgot-password' />
   </method>
   <method>
     <call name='account_info' method='get' url='/accounts/{ACCOUNT_ID}' />
@@ -81,7 +81,7 @@
     <call name='account_set_state' method='post' url='/accounts/{ACCOUNT_ID}/set-state' />
   </method>
   <method>
-    <call name='account_secret_resend' method='get' url='/accounts/{ACCOUNT_ID}/secret-resend' />
+    <call name='account_secret_resend' method='post' url='/accounts/{ACCOUNT_ID}/secret-resend' />
   </method>
   <method>
     <call name='check_account_secrets' method='get' url='/accounts/{ACCOUNT_ID}/check-secrets/{PRIMARY_SECRET}?{PARAMETERS}' />
