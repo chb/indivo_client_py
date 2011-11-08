@@ -193,7 +193,7 @@
     <response />
   </method>
   <method>
-    <call name='delete_share' method='post' url='/records/{RECORD_ID}/shares/{ACCOUNT_ID}/delete' />
+    <call name='delete_share' method='delete' url='/records/{RECORD_ID}/shares/{ACCOUNT_ID}' />
     <response />
   </method>
   <method>
@@ -280,7 +280,7 @@
     <response />
   </method>
   <method>
-    <call name='record_notify' method='post' url='/records/{RECORD_ID}/notify' />
+    <call name='record_notify' method='post' url='/records/{RECORD_ID}/notifications/' />
     <response />
   </method>
   <method>
