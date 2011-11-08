@@ -123,6 +123,10 @@
     <response />
   </method>
   <method>
+    <call name='verify_surl' method='get' url='/oauth/internal/surl-verify' />
+    <response />
+  </method>
+  <method>
     <call name='post_recapp_setup' method='post' url='/records/{RECORD_ID}/apps/{APP_ID}/setup' />
     <response />
   </method>
@@ -260,10 +264,6 @@
     <response />
   </method>
   <method>
-    <call name='get_authorize_token' method='get' url='/oauth/authorize?oauth_token={TOKEN}' />
-    <response />
-  </method>
-  <method>
     <call name='read_recapp_document_ext_meta' method='get' url='/records/{RECORD_ID}/apps/{APP_ID}/documents/external/{EXTERNAL_ID}/meta' />
     <response />
   </method>
@@ -300,10 +300,6 @@
     </response>
   </method>
   <method>
-    <call name='get_access_token' method='get' url='/oauth/access_token' />
-    <response />
-  </method>
-  <method>
     <call name='delete_recapp_document' method='delete' url='/records/{RECORD_ID}/apps/{APP_ID}/documents/{DOCUMENT_ID}' />
     <response />
   </method>
@@ -318,10 +314,6 @@
   <method>
     <call name='message_record_attachment' method='post' url='/records/{RECORD_ID}/inbox/{MESSAGE_ID}/attachments/{ATTACHMENT_NUM}' />
     <response element='Result' attribute='' />
-  </method>
-  <method>
-    <call name='post_authorize_token' method='post' url='/oauth/authorize' />
-    <response />
   </method>
   <method>
     <call name='put_special_document' method='put' url='/records/{RECORD_ID}/documents/special/{SPECIAL_DOCUMENT}' />
