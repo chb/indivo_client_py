@@ -426,7 +426,6 @@
     <response />
   </method>
   <method>
-  <method>
     <call name='read_simple_clinical_notes' method='get' url='/records/{RECORD_ID}/reports/minimal/simple-clinical-notes/?{PARAMETERS}' />
     <response />
   </method>
