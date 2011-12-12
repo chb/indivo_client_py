@@ -252,10 +252,6 @@
     </response>
   </method>
   <method>
-    <call name='get_messages' method='get' url='/records/{RECORD_ID}/inbox/' />
-    <response />
-  </method>
-  <method>
     <call name='get_record_apps' method='get' url='/records/{RECORD_ID}/apps/' />
     <response element='App' attribute='id' />
   </method>
@@ -430,6 +426,11 @@
     <response />
   </method>
   <method>
+  <method>
+    <call name='read_simple_clinical_notes' method='get' url='/records/{RECORD_ID}/reports/minimal/simple-clinical-notes/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
     <call name='read_vitals_category' method='get' url='/records/{RECORD_ID}/reports/minimal/vitals/{CATEGORY}/?{PARAMETERS}' />
     <response />
   </method>
@@ -475,6 +476,14 @@
   </method>
   <method>
     <call name='read_carenet_vitals' method='get' url='/carenets/{CARENET_ID}/reports/minimal/vitals/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_carenet_labs' method='get' url='/carenets/{CARENET_ID}/reports/minimal/labs/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_carenet_simple_clinical_notes' method='get' url='/carenets/{CARENET_ID}/reports/minimal/simple-clinical-notes/?{PARAMETERS}' />
     <response />
   </method>
   <method>
