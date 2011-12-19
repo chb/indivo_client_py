@@ -48,7 +48,7 @@
     <call name='account_search' method='get' url='/accounts/search?{PARAMETERS}' />
   </method>
   <method>
-    <call name='account_forgot_password' method='get' url='/accounts/forgot-password?{PARAMETERS}' />
+    <call name='account_forgot_password' method='post' url='/accounts/{ACCOUNT_ID}/forgot-password' />
   </method>
   <method>
     <call name='account_info' method='get' url='/accounts/{ACCOUNT_ID}' />
@@ -81,7 +81,7 @@
     <call name='account_set_state' method='post' url='/accounts/{ACCOUNT_ID}/set-state' />
   </method>
   <method>
-    <call name='account_secret_resend' method='get' url='/accounts/{ACCOUNT_ID}/secret-resend' />
+    <call name='account_secret_resend' method='post' url='/accounts/{ACCOUNT_ID}/secret-resend' />
   </method>
   <method>
     <call name='check_account_secrets' method='get' url='/accounts/{ACCOUNT_ID}/check-secrets/{PRIMARY_SECRET}?{PARAMETERS}' />
@@ -120,6 +120,10 @@
   </method>
   <method>
     <call name='approve_request_token' method='post' url='/oauth/internal/request_tokens/{REQUEST_TOKEN}/approve' />
+    <response />
+  </method>
+  <method>
+    <call name='verify_surl' method='get' url='/oauth/internal/surl-verify' />
     <response />
   </method>
   <method>
@@ -189,7 +193,7 @@
     <response />
   </method>
   <method>
-    <call name='delete_share' method='post' url='/records/{RECORD_ID}/shares/{ACCOUNT_ID}/delete' />
+    <call name='delete_share' method='delete' url='/records/{RECORD_ID}/shares/{ACCOUNT_ID}' />
     <response />
   </method>
   <method>
@@ -248,19 +252,11 @@
     </response>
   </method>
   <method>
-    <call name='get_messages' method='get' url='/records/{RECORD_ID}/inbox/' />
-    <response />
-  </method>
-  <method>
     <call name='get_record_apps' method='get' url='/records/{RECORD_ID}/apps/' />
     <response element='App' attribute='id' />
   </method>
   <method>
     <call name='read_document_ext_meta' method='get' url='/records/{RECORD_ID}/documents/external/{APP_ID}/{EXTERNAL_ID}/meta' />
-    <response />
-  </method>
-  <method>
-    <call name='get_authorize_token' method='get' url='/oauth/authorize?oauth_token={TOKEN}' />
     <response />
   </method>
   <method>
@@ -280,7 +276,7 @@
     <response />
   </method>
   <method>
-    <call name='record_notify' method='post' url='/records/{RECORD_ID}/notify' />
+    <call name='record_notify' method='post' url='/records/{RECORD_ID}/notifications/' />
     <response />
   </method>
   <method>
@@ -300,10 +296,6 @@
     </response>
   </method>
   <method>
-    <call name='get_access_token' method='get' url='/oauth/access_token' />
-    <response />
-  </method>
-  <method>
     <call name='delete_recapp_document' method='delete' url='/records/{RECORD_ID}/apps/{APP_ID}/documents/{DOCUMENT_ID}' />
     <response />
   </method>
@@ -318,10 +310,6 @@
   <method>
     <call name='message_record_attachment' method='post' url='/records/{RECORD_ID}/inbox/{MESSAGE_ID}/attachments/{ATTACHMENT_NUM}' />
     <response element='Result' attribute='' />
-  </method>
-  <method>
-    <call name='post_authorize_token' method='post' url='/oauth/authorize' />
-    <response />
   </method>
   <method>
     <call name='put_special_document' method='put' url='/records/{RECORD_ID}/documents/special/{SPECIAL_DOCUMENT}' />
@@ -438,6 +426,10 @@
     <response />
   </method>
   <method>
+    <call name='read_simple_clinical_notes' method='get' url='/records/{RECORD_ID}/reports/minimal/simple-clinical-notes/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
     <call name='read_vitals_category' method='get' url='/records/{RECORD_ID}/reports/minimal/vitals/{CATEGORY}/?{PARAMETERS}' />
     <response />
   </method>
@@ -483,6 +475,14 @@
   </method>
   <method>
     <call name='read_carenet_vitals' method='get' url='/carenets/{CARENET_ID}/reports/minimal/vitals/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_carenet_labs' method='get' url='/carenets/{CARENET_ID}/reports/minimal/labs/?{PARAMETERS}' />
+    <response />
+  </method>
+  <method>
+    <call name='read_carenet_simple_clinical_notes' method='get' url='/carenets/{CARENET_ID}/reports/minimal/simple-clinical-notes/?{PARAMETERS}' />
     <response />
   </method>
   <method>
