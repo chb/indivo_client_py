@@ -30,7 +30,7 @@ class CallRes:
 class DataStore:
     def __init__(self):
         self.reset()
-	
+    
     def reset(self):
         self.app_info    = {}
         self.user_info   = {}
@@ -39,7 +39,7 @@ class DataStore:
         self.document_id = ''
         self.carenet_id  = ''
         self.app_id      = ''
-	
+    
     def values(self):
         return {'app_info': self.app_info,
                'user_info': self.user_info,
@@ -67,17 +67,17 @@ class APIConnector:
         #self.host = 'indivobig.genepartnership.org'
         #self.host = 'x-staging.indivo.org'
         self.port = '8000'
-		
+        
         if connection_params:
             if connection_params.has_key('scheme'): self.scheme = connection_params['scheme']
             if connection_params.has_key('host'):   self.host = connection_params['host']
             if connection_params.has_key('port'):   self.port = connection_params['port']
-		
+        
         if self.scheme and self.host and self.port:
             self.utils_obj = IUtils(self.scheme, self.host, self.port)
         else:
             raise APIConnectorError("Scheme, host, port needed")
-		
+        
         self.api = API(self.utils_obj)
         self.ds = DataStore()
         self.ds.reset()
@@ -246,38 +246,38 @@ class IndivoClient(APIConnector):
         return self.api.call(self.ds.app_info, user)
     
     def create_record(self, record):
-    	"""
-    	A contact document is required when creating a record. UI for now only provides given- and family-name and an
-    	email address, so create a very limited document XML for now:
-    	<Contact xmlns="http://indivo.org/vocab/xml/documents#">
-			<name>
-				<fullName>record.fullName OR record.givenName record.familyName</fullName>
-				<givenName>record.givenName</givenName>
-				<familyName>record.familyName</familyName>
-			</name>
-			<email type="personal">record.email</email>
-		</Contact>
-    	"""
-    	
-    	# generate contact XML
-    	givenName = record.get('givenName', '') if record else ''
-    	familyName = record.get('familyName', '') if record else ''
-    	spacer = ' ' if givenName and familyName else ''
-    	fullName = record.get('fullName', '%s%s%s' % (givenName, spacer, familyName)) if record else ''
-    	email = record.get('email', '') if record else 'no_email@indivohealth.org'
-    	
-    	if not fullName and not givenName and not familyName:
-    		raise IOError(400, 'A name is needed to create a new record')
-    	
-    	xml = '''<Contact xmlns="http://indivo.org/vocab/xml/documents#">
-			<name>
-				<fullName>%s</fullName>
-				<givenName>%s</givenName>
-				<familyName>%s</familyName>
-			</name>
-			<email type="personal">%s</email>
-		</Contact>''' % (fullName, givenName, familyName, email)
-		
+        """
+        A contact document is required when creating a record. UI for now only provides given- and family-name and an
+        email address, so create a very limited document XML for now:
+        <Contact xmlns="http://indivo.org/vocab/xml/documents#">
+            <name>
+                <fullName>record.fullName OR record.givenName record.familyName</fullName>
+                <givenName>record.givenName</givenName>
+                <familyName>record.familyName</familyName>
+            </name>
+            <email type="personal">record.email</email>
+        </Contact>
+        """
+        
+        # generate contact XML
+        givenName = record.get('givenName', '') if record else ''
+        familyName = record.get('familyName', '') if record else ''
+        spacer = ' ' if givenName and familyName else ''
+        fullName = record.get('fullName', '%s%s%s' % (givenName, spacer, familyName)) if record else ''
+        email = record.get('email', '') if record else 'no_email@indivohealth.org'
+        
+        if not fullName and not givenName and not familyName:
+            raise IOError(400, 'A name is needed to create a new record')
+        
+        xml = '''<Contact xmlns="http://indivo.org/vocab/xml/documents#">
+            <name>
+                <fullName>%s</fullName>
+                <givenName>%s</givenName>
+                <familyName>%s</familyName>
+            </name>
+            <email type="personal">%s</email>
+        </Contact>''' % (fullName, givenName, familyName, email)
+        
         return self.api.call(self.ds.app_info, xml)
     
     def set_record_id(self, id):
