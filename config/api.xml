@@ -332,6 +332,10 @@
     <response />
   </method>
   <method>
+    <call name='get_app_info' method='get' url='/apps/{APP_ID}' />
+    <response />
+  </method>
+  <method>
     <call name='delete_app' method='delete' url='/apps/{APP_ID}' />
     <response />
   </method>
