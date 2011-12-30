@@ -110,23 +110,24 @@ class APIConnector:
                 else:
                     return retval
         return False
+
+    def _handle_response(self, response):
+        PRD  = 'prd'
+        # SZ: Abstarct this out
+        prd_vals = {'Account' : 'account_id', 'Document' : 'document_id', 'Record' : 'record_id'}
+        for prd_name, attr in prd_vals.items():
+            if response \
+                    and response.has_key(PRD) \
+                    and isinstance(response[PRD], dict) \
+                    and response[PRD].has_key(prd_name):
+                id = response[PRD][prd_name]
+                if len(id) > 0 and attr:
+                    setattr(self.ds, attr, id[0])
+        return True
+
     
     def __getattr__(self, func_name):
         cr = CallRes()
-
-        def handle_response(response):
-            PRD  = 'prd'
-            # SZ: Abstarct this out
-            prd_vals = {'Account' : 'account_id', 'Document' : 'document_id', 'Record' : 'record_id'}
-            for prd_name, attr in prd_vals.items():
-                if response \
-                    and response.has_key(PRD) \
-                    and isinstance(cr.response[PRD], dict) \
-                    and response[PRD].has_key(prd_name):
-                    id = response[PRD][prd_name]
-                    if len(id) > 0 and attr:
-                        setattr(self.ds, attr, id[0])
-            return True
         
         def internal_getattr(*args, **kwargs):
             if hasattr(self.api, func_name):
@@ -143,7 +144,7 @@ class APIConnector:
                         kw[arg] = _defaults[_args.index(arg) - (len(_args) - len(_defaults))]
                     count += 1
                 cr.response = getattr(self.api, func_name)(**kw)
-                handle_response(cr.response)
+                self._handle_response(cr.response)
                 return cr
             return False
         return internal_getattr
@@ -237,18 +238,17 @@ class IndivoClient(APIConnector):
     def create_account(self, user):
         
         # set an account_id
-        account_id = user.get('account_id') or user.get('contact_email')
+        account_id = user.get('account_id') or user.get('user_email') or user.get('contact_email')
         if account_id is None:
             raise APIConnectorError("No user email or account id when posting account")
         
         user['account_id'] = account_id
-        if not user['contact_email']:
-            user['contact_email'] = user.get('contact_email') or account_id
+        user['contact_email'] = user.get('contact_email') or account_id
         
         # There is a difference between app_type chrome without auth and admin
         return self.api.call(self.ds.app_info, user)
     
-    def create_record(self, record):
+    def create_record(self, data=None):
         """
         A contact document is required when creating a record. UI for now only provides given- and family-name and an
         email address, so create a very limited document XML for now:
@@ -262,26 +262,42 @@ class IndivoClient(APIConnector):
         </Contact>
         """
         
-        # generate contact XML
-        givenName = record.get('givenName', '') if record else ''
-        familyName = record.get('familyName', '') if record else ''
-        spacer = ' ' if givenName and familyName else ''
-        fullName = record.get('fullName', '%s%s%s' % (givenName, spacer, familyName)) if record else ''
-        email = record.get('email', '') if record else 'no_email@indivohealth.org'
+        # generate contact XML, if we were passed a data dictionary
+        if hasattr(data, 'get'):
+            givenName = data.get('givenName', '')
+            familyName = data.get('familyName', '')
+            spacer = ' ' if givenName and familyName else ''
+            fullName = data.get('fullName', '%s%s%s' % (givenName, spacer, familyName))
+            email = data.get('email', '')
         
-        if not fullName and not givenName and not familyName:
-            raise IOError(400, 'A name is needed to create a new record')
+            if not fullName and not givenName and not familyName:
+                raise IOError(400, 'A name is needed to create a new record')
         
-        xml = '''<Contact xmlns="http://indivo.org/vocab/xml/documents#">
-            <name>
-                <fullName>%s</fullName>
-                <givenName>%s</givenName>
-                <familyName>%s</familyName>
-            </name>
-            <email type="personal">%s</email>
-        </Contact>''' % (fullName, givenName, familyName, email)
-        
-        return self.api.call(self.ds.app_info, xml)
+            xml = '''<Contact xmlns="http://indivo.org/vocab/xml/documents#">
+                       <name>
+                         <fullName>%s</fullName>
+                         <givenName>%s</givenName>
+                         <familyName>%s</familyName>
+                       </name>
+                       <email type="personal">%s</email>
+                     </Contact>''' % (fullName, givenName, familyName, email)
+
+            old_style = False
+
+        # Assume we were passed a valid contact xml string. If not, this will fail lower down.
+        else:
+            xml = data
+            old_style = True
+
+        ret = self.api.call(self.ds.app_info, xml)
+
+        if old_style:
+            cr = CallRes()
+            cr.response = ret
+            self._handle_response(cr.response)
+            return cr
+
+        return cr
     
     def set_record_id(self, id):
         self.record_id, self.ds.record_id = id, id
@@ -290,8 +306,16 @@ class IndivoClient(APIConnector):
         self.app_id, self.ds.app_id = id, id
 
     def create_session(self, user):
-        if user.has_key('username') and user.has_key('user_pass'):
-            chrome_auth = {'username': user['username'], 'password': user['user_pass']}
+        chrome_auth = {}
+        if user.has_key('username'):
+            chrome_auth['username'] = user['username']
+            if user.has_key('user_pass'):
+                chrome_auth['password'] = user['user_pass']
+            elif user.has_key('system'):
+                chrome_auth['system'] = user['system']
+            else:
+                raise IOError(400, 'Neither a password nor an alternate authentication system supplied')
+            
             res = self.api.call(self.ds.app_info, chrome_auth)
             chrome_token = res.get('prd', None)
             status = res.get('response_status', 500)
@@ -304,7 +328,7 @@ class IndivoClient(APIConnector):
                 return chrome_token
         
         # this previously simply returned False
-        raise IOError(400, 'No username or no password supplied')
+        raise IOError(400, 'No username supplied')
 
     def update_token(self, oauth_token={}):
         if oauth_token \
