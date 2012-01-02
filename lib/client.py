@@ -278,23 +278,23 @@ class IndivoClient(APIConnector):
                        </name>
                        <email type="personal">%s</email>
                      </Contact>''' % (fullName, givenName, familyName, email)
-
+        
             old_style = False
-
+        
         # Assume we were passed a valid contact xml string. If not, this will fail lower down.
         else:
             xml = data
             old_style = True
-
+        
         ret = self.api.call(self.ds.app_info, xml)
-
+        
         if old_style:
             cr = CallRes()
             cr.response = ret
             self._handle_response(cr.response)
             return cr
-
-        return cr
+        
+        return ret
     
     def set_record_id(self, id):
         self.record_id, self.ds.record_id = id, id
