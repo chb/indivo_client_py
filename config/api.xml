@@ -343,6 +343,10 @@
     <call name='delete_record_app' method='delete' url='/records/{RECORD_ID}/apps/{APP_ID}' />
     <response />
   </method>
+  <method>
+    <call name='enable_record_app' method='put' url='/records/{RECORD_ID}/apps/{APP_ID}' />
+    <response />
+  </method>
 
   <!-- App-specific Documents -->
   <method>

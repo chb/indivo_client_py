@@ -290,14 +290,13 @@ class IndivoClient(APIConnector):
             old_style = True
 
         ret = self.api.call(self.ds.app_info, xml)
-
         if old_style:
             cr = CallRes()
             cr.response = ret
             self._handle_response(cr.response)
             return cr
-
-        return cr
+        
+        return ret
     
     def set_record_id(self, id):
         self.record_id, self.ds.record_id = id, id
