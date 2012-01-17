@@ -347,6 +347,14 @@
     <call name='enable_record_app' method='put' url='/records/{RECORD_ID}/apps/{APP_ID}' />
     <response />
   </method>
+  <method>
+    <call name='list_app_records' method='get' url='/apps/{APP_ID}/records/' />
+    <response />
+  </method>
+  <method>
+    <call name='get_autonomous_access_token' method='post' url='/apps/{APP_ID}/records/{RECORD_ID}/access_token' />
+    <response />
+  </method>
 
   <!-- App-specific Documents -->
   <method>
