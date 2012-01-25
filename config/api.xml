@@ -242,7 +242,11 @@
     <response />
   </method>
   <method>
-    <call name='set_record_owner' method='post' url='/records/{RECORD_ID}/owner' />
+    <call name='get_record_owner' method='get' url='/records/{RECORD_ID}/owner' />
+    <response />
+  </method>
+  <method>
+    <call name='set_record_owner' method='put' url='/records/{RECORD_ID}/owner' />
     <response element='Account' attribute='email' />
   </method>
   <method>
@@ -331,12 +335,22 @@
     <call name='query_audit' method='get' url='/records/{RECORD_ID}/audits/query/?{PARAMETERS}' />
     <response />
   </method>
+
+  <method>
+    <call name='list_apps' method='get' url='/apps/' />
+    <response />
+  </method>
   <method>
     <call name='get_app_info' method='get' url='/apps/{APP_ID}' />
     <response />
   </method>
   <method>
     <call name='delete_app' method='delete' url='/apps/{APP_ID}' />
+    <response />
+  </method>
+
+  <method>
+    <call name='get_record_app' method='get' url='/records/{RECORD_ID}/apps/{APP_ID}' />
     <response />
   </method>
   <method>
@@ -486,7 +500,7 @@
     <response />
   </method>
   <method>
-    <call name='read_carenet_vitals_category' method='get' url='/carenets/{CARENET_ID}/reports/minimal/vitals/{CATEGORY}/?{PARAMETERS}' />
+    <call name='read_carenet_vitals_category' method='get' url='/carenets/{CARENET_ID}/reports/minimal/vitals/{CATEGORY}?{PARAMETERS}' />
     <response />
   </method>
   <method>
@@ -603,6 +617,10 @@
   </method>
   <method>
     <call name='post_carenet_app' method='put' url='/carenets/{CARENET_ID}/apps/{APP_ID}' />
+    <response />
+  </method>
+  <method>
+    <call name='delete_carenet_app' method='delete' url='/carenets/{CARENET_ID}/apps/{APP_ID}' />
     <response />
   </method>
 </api>
