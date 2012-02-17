@@ -47,6 +47,9 @@
   <method>
     <call name='account_search' method='get' url='/accounts/search?{PARAMETERS}' />
   </method>
+   <method>
+     <call name='record_search' method='get' url='/records/search?{PARAMETERS}' />
+  </method>
   <method>
     <call name='account_forgot_password' method='post' url='/accounts/{ACCOUNT_ID}/forgot-password' />
   </method>
