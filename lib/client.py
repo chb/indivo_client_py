@@ -85,7 +85,7 @@ class APIConnector:
         self.ds.app_info['consumer_secret'] = consumer_secret 
         self.count = 0
     
-    def call(self, method, url, options=None):
+    def _call(self, method, url, options=None):
         options = options or {}
         
         data = {}
@@ -98,16 +98,25 @@ class APIConnector:
         if self.ds.app_info:
             try:
                 retval = self.utils_obj.http_conn(method, url, self.ds.app_info, parameters=parameters, data=data)
+                return retval
             except:
-                return False
-            
-            if retval:
-                if isinstance(retval, dict) and retval.has_key(CONTENT):
-                    return retval[CONTENT]
-                else:
-                    return retval
+                return False    
         return False
 
+    def call(self, method, url, options=None, get_mimetype=False):
+        retval = self._call(method, url, options)
+        import pdb;pdb.set_trace()
+        if isinstance(retval, dict) and retval.has_key(CONTENT):
+            if get_mimetype:
+                return (retval[CONTENT], retval.get('content_type', 'text/plain'))
+            else:
+                return retval[CONTENT]
+        else:
+            if get_mimetype:
+                return (retval, 'text/plain')
+            else:
+                return retval
+                
     def _handle_response(self, response):
         PRD  = 'prd'
         # SZ: Abstarct this out
