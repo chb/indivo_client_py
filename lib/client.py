@@ -105,7 +105,6 @@ class APIConnector:
 
     def call(self, method, url, options=None, get_mimetype=False):
         retval = self._call(method, url, options)
-        import pdb;pdb.set_trace()
         if isinstance(retval, dict) and retval.has_key(CONTENT):
             if get_mimetype:
                 return (retval[CONTENT], retval.get('content_type', 'text/plain'))
