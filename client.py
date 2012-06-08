@@ -83,6 +83,12 @@ class IndivoClient(oauth.Client):
         self.update_token(req_token)
         return req_token
 
+    @property
+    def auth_redirect_url(self):
+        if not self.token:
+            raise IndivoClientError("Client must have a token to get a redirect url")
+        return self.authorization_url%self.token.key
+        
     def exchange_token(self, verifier):
         """ Exchange the client's current token (should be a request token) for an access token. """
         if not self.token:
