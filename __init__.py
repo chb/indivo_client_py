@@ -1,1 +1,1 @@
-from client import IndivoClient, IndivoClientException
+from client import IndivoClient, IndivoClientError

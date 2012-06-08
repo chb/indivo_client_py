@@ -16,7 +16,7 @@ CONFIG_FILE = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'api.xml'
 # Dictionary to hold API calls defined in the config file
 API_CALLS = {}
 
-class IndivoClientException(Exception):
+class IndivoClientError(Exception):
     pass
 
 class IndivoClient(oauth.Client):
