@@ -43,7 +43,7 @@ class IndivoClient(oauth.Client):
             body = urllib.urlencode(body)
             uri = "%s?%s"%(uri, body) if body else uri
 
-        return self.request(self.api_base+uri, uri_params, method="GET", body=body, headers=headers)
+        return self.request(self.api_base+uri, uri_params, method="GET", body='', headers=headers)
 
     def put(self, uri, body='', headers={}, content_type=None, **uri_params):
         """ Make an OAuth-signed PUT request to Indivo Server. """
