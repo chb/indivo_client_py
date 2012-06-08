@@ -32,7 +32,7 @@ import binascii
 import httplib2
 
 try:
-    from urlparse import parse_qs
+    from urlparse import parse_qs, parse_qsl
     parse_qs # placate pyflakes
 except ImportError:
     # fall back for Python 2.5
@@ -450,7 +450,18 @@ class Request(dict):
     def get_normalized_parameters(self):
         """Return a string that contains the parameters that must be signed."""
         items = []
-        for key, value in self.iteritems():
+
+        params = self.items()
+        # Include any query string parameters from the provided URL
+        query = urlparse.urlparse(self.url)[4]
+        url_items = self._split_url_string(query).items()
+        params.extend(url_items)
+        # Include any form-encoded parameters from the body
+        if self.is_form_encoded:
+           params.extend(parse_qsl(self.body)) 
+        
+        for p in params:
+            key, value = p
             if key == 'oauth_signature':
                 continue
             # 1.0a/9.1.1 states that kvp must be sorted by key, then by value,
@@ -465,13 +476,6 @@ class Request(dict):
                     items.append((to_utf8_if_string(key), to_utf8_if_string(value)))
                 else:
                     items.extend((to_utf8_if_string(key), to_utf8_if_string(item)) for item in value)
-
-        # Include any query string parameters from the provided URL
-        query = urlparse.urlparse(self.url)[4]
-
-        url_items = self._split_url_string(query).items()
-        url_items = [(to_utf8(k), to_utf8(v)) for k, v in url_items if k != 'oauth_signature' ]
-        items.extend(url_items)
 
         items.sort()
         encoded_str = urllib.urlencode(items)
@@ -650,14 +654,9 @@ class Client(httplib2.Http):
         is_form_encoded = \
             headers.get('Content-Type') == 'application/x-www-form-urlencoded'
 
-        if is_form_encoded and body:
-            parameters = parse_qs(body)
-        else:
-            parameters = None
-
         req = Request.from_consumer_and_token(self.consumer, 
             token=self.token, http_method=method, http_url=uri, 
-            parameters=parameters, body=body, is_form_encoded=is_form_encoded)
+            parameters=None, body=body, is_form_encoded=is_form_encoded)
 
         req.sign_request(self.method, self.consumer, self.token)
 
@@ -670,10 +669,8 @@ class Client(httplib2.Http):
 
         realm = schema + ':' + hierpart + host
 
-        # Get request data, as the body or as the querystring
-        if is_form_encoded:
-            body = req.to_postdata()
-        elif method == "GET":
+        # Get querystring request data
+        if method == "GET":
             uri = req.to_url()
 
         # Always sign the headers
