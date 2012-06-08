@@ -76,7 +76,7 @@ class IndivoClient(oauth.Client):
         """ Get a request token from the server. """
         if self.token:
             raise IndivoClientError("Client already has a resource token.")
-        resp, content = self.post(REQUEST_TOKEN_URL, body={})
+        resp, content = self.post(REQUEST_TOKEN_URL, body=params)
         if resp['status'] != '200':
             raise IndivoClientError("%s response fetching request token: %s"%(resp['status'], content))
         req_token = dict(urlparse.parse_qsl(content))
