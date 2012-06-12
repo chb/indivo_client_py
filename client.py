@@ -3,6 +3,9 @@ import urllib
 import urlparse
 import re
 import os
+import base64
+import hmac
+import hashlib
 from xml.dom import minidom as XML # Use the built-in to avoid requiring an lxml install
 
 # OAuth relative URLs
@@ -100,6 +103,13 @@ class IndivoClient(oauth.Client):
         access_token = dict(urlparse.parse_qsl(content))
         self.update_token(access_token)
         return access_token
+
+    def get_surl_credentials(self):
+        """ Produces a token and secret for signing URLs."""
+        if not self.token:
+            raise IndivoClientError("Client must have a token to generate SURL credentials.")
+        secret = base64.b64encode(hmac.new(self.token.secret, "SURL-SECRET", hashlib.sha1).digest())
+        return {'token': self.token.key, 'secret': secret}
 
     def _fill_url_template(self, url, **kwargs):
         for param_name in re.findall("{(.*?)}", str(url)):
