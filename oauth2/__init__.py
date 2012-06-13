@@ -523,10 +523,14 @@ class Request(dict):
             parameters = {}
  
         # Headers
-        if headers and 'Authorization' in headers:
-            auth_header = headers['Authorization']
+        if headers:
+            auth_header = None
+            if 'Authorization' in headers:
+                auth_header = headers['Authorization']
+            elif 'HTTP_AUTHORIZATION' in headers:
+                auth_header = headers['HTTP_AUTHORIZATION']
             # Check that the authorization header is OAuth.
-            if auth_header[:6] == 'OAuth ':
+            if auth_header and auth_header[:6] == 'OAuth ':
                 auth_header = auth_header[6:]
                 try:
                     # Get the parameters from the header.
