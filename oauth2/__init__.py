@@ -458,7 +458,7 @@ class Request(dict):
         params.extend(url_items)
         # Include any form-encoded parameters from the body
         if self.is_form_encoded:
-           params.extend(parse_qsl(self.body)) 
+           params.extend(parse_qsl(self.body, keep_blank_values=True)) 
         
         for p in params:
             key, value = p
