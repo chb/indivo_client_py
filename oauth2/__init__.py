@@ -616,7 +616,7 @@ class Request(dict):
         """Turn URL string into parameters."""
         parameters = parse_qs(param_str.encode('utf-8'), keep_blank_values=True)
         for k, v in parameters.iteritems():
-            parameters[k] = urllib.unquote(v[0])
+            parameters[k] = v[0]
         return parameters
 
 
@@ -823,7 +823,6 @@ class SignatureMethod_HMAC_SHA1(SignatureMethod):
     def signing_base(self, request, consumer, token):
         if not hasattr(request, 'normalized_url') or request.normalized_url is None:
             raise ValueError("Base URL for request is not set.")
-
         sig = (
             escape(request.method),
             escape(request.normalized_url),
