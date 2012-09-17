@@ -25,8 +25,9 @@ result = client.access_resource(http_request)
 print result
 """
 
-import cgi
-import urllib, urllib2, urlparse, cgi
+import urllib
+import urllib2
+import urlparse
 import time
 import random
 import urlparse
@@ -91,7 +92,7 @@ class OAuthToken(object):
   # oauth_token_secret=digg&oauth_token=digg
   @staticmethod   
   def from_string(s):
-    params = cgi.parse_qs(s, keep_blank_values=False)
+    params = urlparse.parse_qs(s, keep_blank_values=False)
     key = params['oauth_token'][0]
     secret = params['oauth_token_secret'][0]
 
@@ -827,7 +828,7 @@ def escape(s):
 
 # parse a query string
 def parse_qs(qs):
-  data = cgi.parse_qs(qs, keep_blank_values = True)
+  data = urlparse.parse_qs(qs, keep_blank_values = True)
   for k in data.keys():
     if len(data[k]) == 1:
       data[k] = data[k][0]

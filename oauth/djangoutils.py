@@ -21,7 +21,7 @@ def extract_request(request):
     if request.method == "GET":
         data = request.META['QUERY_STRING']
     else:
-        data = request.raw_post_data
+        data = request.body
 
     if not data:
         data = ""

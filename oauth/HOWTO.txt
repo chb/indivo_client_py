@@ -67,7 +67,7 @@ def extract_request(request):
     if request.method == "GET":
         data = request.META['QUERY_STRING']
     else:
-        data = request.raw_post_data
+        data = request.body
 
     content_type = request.META['CONTENT_TYPE']
 
