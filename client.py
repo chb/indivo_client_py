@@ -99,7 +99,7 @@ class IndivoClient(oauth.Client):
         self.token.set_verifier(verifier)
         resp, content = self.post(ACCESS_TOKEN_URL)
         if resp['status'] != '200':
-            raise IndivoClientError("%s response fetching access token: %s"%(res['status'], content))
+            raise IndivoClientError("%s response fetching access token: %s"%(resp['status'], content))
         access_token = dict(urlparse.parse_qsl(content))
         self.update_token(access_token)
         return access_token
