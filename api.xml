@@ -43,7 +43,7 @@
   <call name="app_manifest" method="GET" url="/apps/{PHA_EMAIL}/manifest" />
   <call name="app_record_list" method="GET" url="/apps/{PHA_EMAIL}/records/" />
   <call name="autonomous_access_token" method="POST" url="/apps/{PHA_EMAIL}/records/{RECORD_ID}/access_token" />
-  <call name="smart_capabilities" method="GET" url="/capabilities/" />
+  <call name="smart_manifest" method="GET" url="/manifest" />
   <call name="carenet_delete" method="DELETE" url="/carenets/{CARENET_ID}" />
   <call name="carenet_account_list" method="GET" url="/carenets/{CARENET_ID}/accounts/" />
   <call name="carenet_account_create" method="POST" url="/carenets/{CARENET_ID}/accounts/" />
@@ -59,10 +59,6 @@
   <call name="carenet_document_meta" method="GET" url="/carenets/{CARENET_ID}/documents/{DOCUMENT_ID}/meta" />
   <call name="carenet_record" method="GET" url="/carenets/{CARENET_ID}/record" />
   <call name="carenet_rename" method="POST" url="/carenets/{CARENET_ID}/rename" />
-  <call name="carenet_equipment_list" method="GET" url="/carenets/{CARENET_ID}/reports/minimal/equipment/" />
-  <call name="carenet_measurement_list" method="GET" url="/carenets/{CARENET_ID}/reports/minimal/measurements/{LAB_CODE}/" />
-  <call name="carenet_procedure_list" method="GET" url="/carenets/{CARENET_ID}/reports/minimal/procedures/" />
-  <call name="carenet_simple_clinical_notes_list" method="GET" url="/carenets/{CARENET_ID}/reports/minimal/simple-clinical-notes/" />
   <call name="carenet_generic_list" method="GET" url="/carenets/{CARENET_ID}/reports/{DATA_MODEL}/" />
   <call name="coding_systems_list" method="GET" url="/codes/systems/" />
   <call name="coding_system_query" method="GET" url="/codes/systems/{SYSTEM_SHORT_NAME}/query" />
@@ -78,7 +74,6 @@
   <call name="record_create_ext" method="PUT" url="/records/external/{PRINCIPAL_EMAIL}/{EXTERNAL_ID}" />
   <call name="record_search" method="GET" url="/records/search" />
   <call name="record" method="GET" url="/records/{RECORD_ID}" />
-  <call name="smart_allergies" method="GET" url="/records/{RECORD_ID}/allergies/" />
   <call name="record_phas" method="GET" url="/records/{RECORD_ID}/apps/" />
   <call name="pha_record_delete" method="DELETE" url="/records/{RECORD_ID}/apps/{PHA_EMAIL}" />
   <call name="record_pha" method="GET" url="/records/{RECORD_ID}/apps/{PHA_EMAIL}" />
